@@ -1,0 +1,12 @@
+{
+  "debug.javascript.unmapMissingSources": true,
+  "deno.codeLens.implementations": true,
+  "deno.codeLens.references": true,
+  "deno.codeLens.referencesAllFunctions": true,
+  "deno.enable": true,
+  "deno.lint": true,
+  "deno.suggest.completeFunctionCalls": true,
+  "deno.suggest.imports.hosts": {
+    "https://github.com": false
+  }
+}

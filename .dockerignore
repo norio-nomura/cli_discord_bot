@@ -1,0 +1,8 @@
+.devcontainer
+.dockerignore
+.env
+.git
+app.json
+docker-compose.yml
+heroku.yml
+screenshot.png

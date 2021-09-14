@@ -1,0 +1,24 @@
+version: '3'
+services:
+  playground:
+    user: bot
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DOCKER_IMAGE: ${DOCKER_IMAGE:-ubuntu:18.04}
+    
+    environment:
+      - DISCORD_NICKNAME
+      - DISCORD_PLAYING
+      # - DISCORD_TOKEN # should be provided by .env
+      - ENV_ARGS
+      - ENV_COMMAND
+      - TARGET_ARGS_TO_USE_STDIN
+      - TARGET_CLI
+      - TARGET_DEFAULT_ARGS
+      - TIMEOUT_ARGS
+      - TIMEOUT_COMMAND
+    env_file: .env
+    tty: true
+ 

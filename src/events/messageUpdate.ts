@@ -30,8 +30,6 @@ eventHandlers.messageUpdate = async function (msg, oldMsg) {
       return;
     }
 
-    await startTyping(msg.channelId);
-
     const defaultCmds = isDM ? [""] : [];
     const oldInput = codeblock(oldMsg);
     const oldCmds = isMentioned(oldMsg) && commandlines(oldMsg) || defaultCmds;
@@ -43,6 +41,10 @@ eventHandlers.messageUpdate = async function (msg, oldMsg) {
       input === oldInput && JSON.stringify(cmds) === JSON.stringify(oldCmds)
     ) {
       return;
+    }
+
+    if (cmds.length > 0) {
+      await startTyping(msg.channelId);
     }
 
     // if input or commandline is not empty, bot can execute target

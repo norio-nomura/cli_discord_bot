@@ -1,7 +1,8 @@
 {
-  "name": "Cat Discord Bot",
+  "name": "Swift Compiler Discord Bot",
   "keywords": [
-    "cat",
+    "swift",
+    "compiler",
     "discord",
     "bot"
   ],
@@ -10,6 +11,10 @@
   "env": {
     "DISCORD_TOKEN": {
       "description": "A secret key for sigin to Discord Bot",
+      "required": true
+    },
+    "GITHUB_TOKEN": {
+      "description": "A secret key for fetching Swift Version Informations",
       "required": true
     }
   }

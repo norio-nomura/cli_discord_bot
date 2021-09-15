@@ -1,4 +1,4 @@
-# CLI Discord Bot
+# Swift Compiler Discord Bot
 
 Written in [Deno](https://deno.land) and deployed with Docker.
 
@@ -24,6 +24,7 @@ This is a generalized version of [SwiftCompilerDiscordappBot](https://github.com
 3. Run bot on local host using `docker compose`
    ```terminal.sh-session
    export DISCORD_TOKEN="<discord token here>" # discord token, should be provided by `.env`
+   export GITHUB_TOKEN="<github token here>"   # github token, should be provided by `.env`
    docker compose up
    ```
 
@@ -41,44 +42,35 @@ This is a generalized version of [SwiftCompilerDiscordappBot](https://github.com
 
 ### Build time configuration
 
-| Variable Name  | Description                                | default      |
-| -------------- | ------------------------------------------ | ------------ |
-| `DOCKER_IMAGE` | Docker image that provides swift on ubuntu | ubuntu:18.04 |
+| Variable Name  | Description                                | default                     |
+| -------------- | ------------------------------------------ | --------------------------- |
+| `DOCKER_IMAGE` | Docker image that provides swift on ubuntu | swift:latest                |
 
 ### Environment variables for run time configurations
 
-| Variable Name              | Description                           | default            |
-| -------------------------- | ------------------------------------- | ------------------ |
-| `DISCORD_TOKEN`            | Discord Bot's token                   |                    |
-| `DISCORD_NICKNAME`         | Discord Nickname                      | `TARGET_CLI` value |
-| `DISCORD_PLAYING`          | status for "Playing"                  | `TARGET_CLI` value |
-| `ENV_COMMAND`              | Env command launching Timeout command | `/usr/bin/env`     |
-| `ENV_ARGS`                 | arguments for Env command             | `-i`               |
-| `TARGET_CLI`               | target CLI                            | `cat`              |
-| `TARGET_ARGS_TO_USE_STDIN` | arguments for CLI with input          |                    |
-| `TARGET_DEFAULT_ARGS`      | arguments for CLI with no arguments   |                    |
-| `TIMEOUT_COMMAND`          | Timeout command launching target CLI  | `timeout`          |
-| `TIMEOUT_ARGS`             | arguments for timeout command         | `--signal=KILL 30` |
+| Variable Name              | Description                            | default            |
+| -------------------------- | -------------------------------------- | ------------------ |
+| `DISCORD_TOKEN`            | Discord Bot's token                    |                    |
+| `DISCORD_NICKNAME`         | Discord Nickname                       | Swift Version      |
+| `DISCORD_PLAYING`          | status for "Playing"                   | Tag in apple/swift |
+| `ENV_COMMAND`              | Env command launching Timeout command  | `/usr/bin/env`     |
+| `ENV_ARGS`                 | arguments for Env command              | `-i`               |
+| ``GITHUB_TOKEN`            | GitHub token (permission: public_repo) |                    |
+| `TARGET_CLI`               | target CLI                             | `swift`            |
+| `TARGET_ARGS_TO_USE_STDIN` | arguments for CLI with input           | `-`                |
+| `TARGET_DEFAULT_ARGS`      | arguments for CLI with no arguments    |                    |
+| `TIMEOUT_COMMAND`          | Timeout command launching target CLI   | `timeout`          |
+| `TIMEOUT_ARGS`             | arguments for timeout command          | `--signal=KILL 30` |
 
-### Examples
+### Example
 
 #### swift 5.4 compiler bot:
 
 ```terminal.sh-session
 export DISCORD_TOKEN="<discord token here>" # discord token, should be provided by `.env`
 export DOCKER_IMAGE=swift:5.4               # docker image
-export TARGET_CLI=swift                     # target cli
-export TARGET_ARGS_TO_USE_STDIN=-           # swift requires "-" to use stdin as code
+export GITHUB_TOKEN="<github token here>"   # github token, should be provided by `.env`
 docker compose up
-```
-
-#### jq bot:
-
-```terminal.sh-session
-export DISCORD_TOKEN="<discord token here>" # discord token, should be provided by `.env`
-export DOCKER_IMAGE=stedolan/jq             # docker image
-export TARGET_CLI=jq                        # target cli
-docker-compose up
 ```
 
 ### Deploy to Heroku
@@ -96,7 +88,7 @@ git clone https://github.com/norio-nomura/cli_discord_bot.git
 cd cli_discord_bot
 heroku container:login
 heroku create
-heroku config:set DISCORD_TOKEN="<discord token here>" TARGET_CLI=swift TARGET_ARGS_TO_USE_STDIN=-
+heroku config:set DISCORD_TOKEN="<discord token here>" GITHUB_TOKEN="<github token here>"
 heroku container:push worker --arg DOCKER_IMAGE=swift:5.4
 ```
 

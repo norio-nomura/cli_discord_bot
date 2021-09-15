@@ -20,7 +20,7 @@ services:
       context: devcontainers
       dockerfile: Dockerfile
       args:
-        DOCKER_IMAGE: ${DOCKER_IMAGE:-swift:4.0}
+        DOCKER_IMAGE: ${DOCKER_IMAGE:-swift:latest}
     volumes:
       - ./devcontainers/.vscode-server/extensions:/home/bot/.vscode-server/extensions
       - ./devcontainers/.vscode-server/extensions:/home/bot/.vscode-server-insiders/extensions

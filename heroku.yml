@@ -2,5 +2,5 @@ build:
   docker:
     worker: Dockerfile
   config:
-    DOCKER_IMAGE: ubuntu:18.04
+    DOCKER_IMAGE: swift:latest
 

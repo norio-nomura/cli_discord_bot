@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        DOCKER_IMAGE: ${DOCKER_IMAGE:-ubuntu:18.04}
+        DOCKER_IMAGE: ${DOCKER_IMAGE:-swift:latest}
     
     environment:
       - DISCORD_NICKNAME
@@ -14,6 +14,7 @@ services:
       # - DISCORD_TOKEN # should be provided by .env
       - ENV_ARGS
       - ENV_COMMAND
+      # - GITHUB_TOKEN # should be provided by .env
       - TARGET_ARGS_TO_USE_STDIN
       - TARGET_CLI
       - TARGET_DEFAULT_ARGS

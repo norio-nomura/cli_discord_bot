@@ -1,13 +1,6 @@
 import { DiscordChannelTypes, EventHandlers, startTyping } from "../../deps.ts";
 import { executeTarget } from "../utils/executeTarget.ts";
-import {
-  channelTypeOf,
-  codeblock,
-  commandlines,
-  help,
-  isMentioned,
-  shouldIgnore,
-} from "../utils/message.ts";
+import { channelTypeOf, codeblock, commandlines, help, isMentioned, shouldIgnore } from "../utils/message.ts";
 
 export const messageCreate: EventHandlers["messageCreate"] = async function (msg) {
   try {
@@ -36,9 +29,7 @@ export const messageCreate: EventHandlers["messageCreate"] = async function (msg
     // if multple replies are needed, content should include commandline
     const outputCmd = cmds.length > 1 ? true : false;
     const results = await Promise.all(
-      cmds.map((cmd) =>
-        canExecute(cmd) ? executeTarget(cmd, input, outputCmd) : help(msg)
-      ),
+      cmds.map((cmd) => canExecute(cmd) ? executeTarget(cmd, input, outputCmd) : help(msg)),
     );
     for (const result of results) {
       await msg.reply(result.content);

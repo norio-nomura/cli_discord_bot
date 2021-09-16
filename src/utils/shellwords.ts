@@ -25,9 +25,7 @@ export function shellsplit(string: string): string[] {
 
 /** Escapes a string so that it can be safely used in a Bourne shell command line. */
 export function shellescape(string: string): string {
-  return string
-    ? string.replace(/[^A-Za-z0-9_\-.,:+\/@\n]/g, "\\$&").replace(/\n/g, "'\n'")
-    : "''";
+  return string ? string.replace(/[^A-Za-z0-9_\-.,:+\/@\n]/g, "\\$&").replace(/\n/g, "'\n'") : "''";
 }
 
 /** Builds a command line string from an argument list */

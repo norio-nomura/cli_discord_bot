@@ -1,10 +1,4 @@
-import {
-  botId,
-  DiscordenoMessage,
-  DiscordMessageTypes,
-  getChannel,
-  getMessages,
-} from "../../deps.ts";
+import { botId, DiscordenoMessage, DiscordMessageTypes, getChannel, getMessages } from "../../deps.ts";
 import { getCurrentUser } from "../helpers/getCurrentUser.ts";
 import { ExecutionResult } from "./executeTarget.ts";
 
@@ -63,10 +57,8 @@ Usage:
   } as ExecutionResult;
 }
 
-const snowflakeFrom = (i: bigint | string): string =>
-  typeof i === "string" ? i : i && i.toString() || "";
-const bigintFrom = (i: bigint | string): bigint =>
-  typeof i === "bigint" ? i : i && BigInt(i) || 0n;
+const snowflakeFrom = (i: bigint | string): string => typeof i === "string" ? i : i && i.toString() || "";
+const bigintFrom = (i: bigint | string): bigint => typeof i === "bigint" ? i : i && BigInt(i) || 0n;
 
 /** Returns messages replied by bot to the messageId and channelId */
 export async function getReplies(

@@ -51,9 +51,7 @@ export const messageUpdate: EventHandlers["messageUpdate"] = async function (msg
     // if multple replies are needed, content should include commandline
     const outputCmd = cmds.length > 1 ? true : false;
     const resultsPromise = Promise.all(
-      cmds.map((cmd) =>
-        canExecute(cmd) ? executeTarget(cmd, input, outputCmd) : help(msg)
-      ),
+      cmds.map((cmd) => canExecute(cmd) ? executeTarget(cmd, input, outputCmd) : help(msg)),
     );
     const resultAndReplies = await Promise.all([
       resultsPromise,

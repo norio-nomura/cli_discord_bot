@@ -5,7 +5,7 @@ export const messageDelete: EventHandlers["messageDelete"] = async function ({ i
   try {
     if (msg && shouldIgnore(msg)) return;
 
-    // delete all bot's replies against them message
+    // delete all bot's replies against the message
     const replies = await getReplies(channelId, id);
     await Promise.all(replies.map((reply) => reply.delete()));
   } catch (error) {

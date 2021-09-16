@@ -6,11 +6,6 @@ async function guardEnv(key: string, defaultValue?: string) {
   const status = await Deno.permissions.query({ name: "env", variable: key });
   return status.state === "granted" && Deno.env.get(key) ||
     (defaultValue != undefined ? defaultValue : fail(`\`${key}\` environment variable is not defined!`));
-  // if (defaultValue != undefined) {
-  //   return status.state === "granted" && Deno.env.get(key) || defaultValue;
-  // } else {
-  //   return status.state === "granted" && Deno.env.get(key) || fail(`\`${key}\` environment variable is not defined!`);
-  // }
 }
 
 export const target = {

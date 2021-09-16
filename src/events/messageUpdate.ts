@@ -23,7 +23,7 @@ export const messageUpdate: EventHandlers["messageUpdate"] = async function (msg
     ].includes(channelType);
     const isDM = channelType === DiscordChannelTypes.DM;
     if (isChannelTypeSupported) {
-      // new message may be deleted mentions to bot
+      // new message may be changed to delete mentions to bot
       // if (!isMentioned(msg)) return;
     } else if (!isDM) {
       return;

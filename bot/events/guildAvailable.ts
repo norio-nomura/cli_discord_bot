@@ -1,5 +1,5 @@
 import { editBotNickname, EventHandlers } from "../../deps.ts";
-import { discord } from "../botConfiguration.ts";
+import { discord } from "../configuration.ts";
 
 export const guildAvailable: EventHandlers["guildAvailable"] = function (guild) {
   console.info(`Guild Available: ${guild.name}`);

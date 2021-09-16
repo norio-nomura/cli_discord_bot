@@ -1,4 +1,4 @@
-import { envCommand, target, timeoutCommand } from "../botConfiguration.ts";
+import { envCommand, target, timeoutCommand } from "../configuration.ts";
 import { shelljoin, shellsplit } from "./shellwords.ts";
 
 export interface ExecutionResult {

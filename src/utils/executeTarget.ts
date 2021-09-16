@@ -24,9 +24,9 @@ export async function executeTarget(
   outputCommandline = false,
 ): Promise<ExecutionResult> {
   const contentMax = 2000;
-  var content = "";
-  var attachOutput = false;
-  var attachError = false;
+  let content = "";
+  let attachOutput = false;
+  let attachError = false;
 
   try {
     // Setup RunOptions

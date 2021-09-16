@@ -5,8 +5,8 @@
  * It throws Error("Unmatched quote") if quote unmatch.
  */
 export function shellsplit(string: string): string[] {
-  var words: string[] = [];
-  var field = "";
+  const words: string[] = [];
+  let field = "";
 
   const matches = string.matchAll(/\s*(?:([^\s\\\'\"]+)|'([^\']*)'|"((?:[^\"\\]|\\.)*)"|(\\.?)|(\S))(\s?|$)/gm);
   for (const [, word, sq, dq, esc, garbage, sep] of matches) {

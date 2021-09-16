@@ -1,5 +1,4 @@
-import { DiscordChannelTypes, startTyping } from "../../deps.ts";
-import { eventHandlers } from "./eventHandlers.ts";
+import { DiscordChannelTypes, EventHandlers, startTyping } from "../../deps.ts";
 import { executeTarget } from "../utils/executeTarget.ts";
 import {
   channelTypeOf,
@@ -10,7 +9,7 @@ import {
   shouldIgnore,
 } from "../utils/message.ts";
 
-eventHandlers.messageCreate = async function (msg) {
+export const messageCreate: EventHandlers["messageCreate"] = async function (msg) {
   try {
     if (shouldIgnore(msg)) return;
 

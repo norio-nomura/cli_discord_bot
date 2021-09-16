@@ -1,8 +1,7 @@
-import { editBotStatus } from "../../deps.ts";
-import { eventHandlers } from "./eventHandlers.ts";
+import { editBotStatus, EventHandlers } from "../../deps.ts";
 import { discord } from "../botConfiguration.ts";
 
-eventHandlers.ready = function () {
+export const ready: EventHandlers["ready"] = function () {
   console.info("Successfully connected to gateway");
   try {
     editBotStatus({

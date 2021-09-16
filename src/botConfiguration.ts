@@ -1,5 +1,5 @@
 import { BotConfig, fail } from "../deps.ts";
-import { loadEventHandlers } from "./events/eventHandlers.ts";
+import { eventHandlers } from "./events/eventHandlers.ts";
 import { shellsplit } from "./utils/shellwords.ts";
 
 async function guardEnv(key: string, defaultValue?: string) {
@@ -48,10 +48,8 @@ export const discord = {
   playing: await guardEnv("DISCORD_PLAYING", target.cli),
 };
 
-export async function botConfiguration(): Promise<BotConfig> {
-  return {
-    token: discord.token,
-    intents: ["Guilds", "GuildMessages", "DirectMessages"],
-    eventHandlers: await loadEventHandlers(),
-  };
-}
+export const botConfiguration: BotConfig = {
+  token: discord.token,
+  intents: ["Guilds", "GuildMessages", "DirectMessages"],
+  eventHandlers: eventHandlers,
+};

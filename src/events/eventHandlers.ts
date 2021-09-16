@@ -1,12 +1,14 @@
 import { EventHandlers } from "../../deps.ts";
+import { guildAvailable } from "./guildAvailable.ts";
+import { messageCreate } from "./messageCreate.ts";
+import { messageDelete } from "./messageDelete.ts";
+import { messageUpdate } from "./messageUpdate.ts";
+import { ready } from "./ready.ts";
 
-export const eventHandlers = {} as EventHandlers;
-
-export async function loadEventHandlers(): Promise<EventHandlers> {
-  await import("./guildAvailable.ts");
-  await import("./messageCreate.ts");
-  await import("./messageDelete.ts");
-  await import("./messageUpdate.ts");
-  await import("./ready.ts");
-  return eventHandlers;
-}
+export const eventHandlers: EventHandlers = {
+  guildAvailable,
+  messageCreate,
+  messageDelete,
+  messageUpdate,
+  ready,
+};

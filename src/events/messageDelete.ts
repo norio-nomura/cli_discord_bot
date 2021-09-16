@@ -1,7 +1,7 @@
-import { eventHandlers } from "./eventHandlers.ts";
+import { EventHandlers } from "../../deps.ts";
 import { getReplies, shouldIgnore } from "../utils/message.ts";
 
-eventHandlers.messageDelete = async function ({ id, channelId }, msg) {
+export const messageDelete: EventHandlers["messageDelete"] = async function ({ id, channelId }, msg) {
   try {
     if (msg && shouldIgnore(msg)) return;
 

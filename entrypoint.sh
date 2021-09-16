@@ -20,6 +20,5 @@ TARGET_DEFAULT_ARGS,\
 TIMEOUT_ARGS,\
 TIMEOUT_COMMAND \
     --allow-net \
-    --allow-read=./bot.ts,./deps.ts,./src \
     --allow-run=/usr/bin/env \
     ./bot.ts || echo "failed"

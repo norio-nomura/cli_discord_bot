@@ -1,5 +1,4 @@
-import { DiscordChannelTypes, startTyping } from "../../deps.ts";
-import { eventHandlers } from "./eventHandlers.ts";
+import { DiscordChannelTypes, EventHandlers, startTyping } from "../../deps.ts";
 import { executeTarget } from "../utils/executeTarget.ts";
 import {
   channelTypeOf,
@@ -12,7 +11,7 @@ import {
 } from "../utils/message.ts";
 import { zipLongest } from "../utils/zip.ts";
 
-eventHandlers.messageUpdate = async function (msg, oldMsg) {
+export const messageUpdate: EventHandlers["messageUpdate"] = async function (msg, oldMsg) {
   try {
     if (shouldIgnore(msg)) return;
 

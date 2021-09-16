@@ -19,11 +19,14 @@ export const messageCreate: EventHandlers["messageCreate"] = async function (msg
       return;
     }
 
-    await startTyping(msg.channelId);
-
     const defaultCmds = isDM ? [""] : [];
     const input = codeblock(msg);
     const cmds = isMentioned(msg) && commandlines(msg) || defaultCmds;
+
+    if (cmds.length > 0) {
+      await startTyping(msg.channelId);
+    }
+
     // if input or commandline is not empty, bot can execute target
     const canExecute = input ? () => true : (cmd: string) => !!cmd;
     // if multple replies are needed, content should include commandline

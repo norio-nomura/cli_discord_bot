@@ -21,4 +21,5 @@ TIMEOUT_ARGS,\
 TIMEOUT_COMMAND \
     --allow-net \
     --allow-run=/usr/bin/env \
+    --quiet \
     ./bot.ts || echo "failed"

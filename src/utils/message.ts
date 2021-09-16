@@ -22,9 +22,7 @@ export function isMentioned(message?: DiscordenoMessage): boolean {
  * Parses content in message and returns commandlines for target if available.
  * Commandlines are captured between mention to bot and end of line.
  */
-export function commandlines(
-  message?: DiscordenoMessage,
-): string[] | undefined {
+export function commandlines(message?: DiscordenoMessage): string[] | undefined {
   if (message == undefined || !isMentioned(message)) return;
 
   const patternForMentionToBot = new RegExp(`<@!?${botId}>(?<args>.*)$`, "mg");
@@ -42,8 +40,7 @@ export function codeblock(message?: DiscordenoMessage): string | undefined {
 
 /** Build help message content for replying to the message */
 export async function help(message: DiscordenoMessage) {
-  const username = message.guild?.bot?.name(message.guildId) ||
-    (await getCurrentUser()).username;
+  const username = message.guild?.bot?.name(message.guildId) || (await getCurrentUser()).username;
   return {
     status: 0,
     content: `\`\`\`
@@ -61,10 +58,7 @@ const snowflakeFrom = (i: bigint | string): string => typeof i === "string" ? i 
 const bigintFrom = (i: bigint | string): bigint => typeof i === "bigint" ? i : i && BigInt(i) || 0n;
 
 /** Returns messages replied by bot to the messageId and channelId */
-export async function getReplies(
-  channelId: bigint | string,
-  messageId: bigint | string,
-) {
+export async function getReplies(channelId: bigint | string, messageId: bigint | string) {
   const msgs = await getMessages(bigintFrom(channelId), {
     after: bigintFrom(messageId),
   });

@@ -9,8 +9,6 @@ export const messageDelete: EventHandlers["messageDelete"] = async function ({ i
     const replies = await getReplies(channelId, id);
     await Promise.all(replies.map((reply) => reply.delete()));
   } catch (error) {
-    console.error(
-      `\`messageDelete\`: "${msg?.link}" failed with error: "${error}"`,
-    );
+    console.error(`\`messageDelete\`: "${msg?.link}" failed with error: "${error}"`);
   }
 };

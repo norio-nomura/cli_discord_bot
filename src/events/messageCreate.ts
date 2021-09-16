@@ -35,8 +35,6 @@ export const messageCreate: EventHandlers["messageCreate"] = async function (msg
       await msg.reply(result.content);
     }
   } catch (error) {
-    console.error(
-      `\`messageCreate\`: "${msg.link}" failed with error: "${error}"`,
-    );
+    console.error(`\`messageCreate\`: "${msg.link}" failed with error: "${error}"`);
   }
 };

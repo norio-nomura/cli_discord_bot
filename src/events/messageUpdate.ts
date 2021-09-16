@@ -36,11 +36,7 @@ export const messageUpdate: EventHandlers["messageUpdate"] = async function (msg
     const input = codeblock(msg);
     const cmds = isMentioned(msg) && commandlines(msg) || defaultCmds;
     // Is the message changed from the old message?
-    if (
-      input === oldInput && JSON.stringify(cmds) === JSON.stringify(oldCmds)
-    ) {
-      return;
-    }
+    if (input === oldInput && JSON.stringify(cmds) === JSON.stringify(oldCmds)) return;
 
     if (cmds.length > 0) {
       await startTyping(msg.channelId);
@@ -53,10 +49,7 @@ export const messageUpdate: EventHandlers["messageUpdate"] = async function (msg
     const resultsPromise = Promise.all(
       cmds.map((cmd) => canExecute(cmd) ? executeTarget(cmd, input, outputCmd) : help(msg)),
     );
-    const resultAndReplies = await Promise.all([
-      resultsPromise,
-      getReplies(msg.channelId, msg.id),
-    ]);
+    const resultAndReplies = await Promise.all([resultsPromise, getReplies(msg.channelId, msg.id)]);
 
     for (const [result, reply] of zipLongest(...resultAndReplies)) {
       if (result && reply) {
@@ -68,8 +61,6 @@ export const messageUpdate: EventHandlers["messageUpdate"] = async function (msg
       }
     }
   } catch (error) {
-    console.error(
-      `\`messageUpdate\`: "${msg.link}" failed with error: "${error}"`,
-    );
+    console.error(`\`messageUpdate\`: "${msg.link}" failed with error: "${error}"`);
   }
 };

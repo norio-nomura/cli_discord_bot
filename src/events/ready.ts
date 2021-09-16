@@ -9,8 +9,6 @@ export const ready: EventHandlers["ready"] = function () {
       activities: [{ name: discord.playing, type: 0, createdAt: Date.now() }],
     });
   } catch (error) {
-    console.error(
-      `\`ready\` failed with error: "${error}"`,
-    );
+    console.error(`\`ready\` failed with error: "${error}"`);
   }
 };

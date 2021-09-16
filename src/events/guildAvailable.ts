@@ -9,8 +9,6 @@ export const guildAvailable: EventHandlers["guildAvailable"] = function (guild) 
       editBotNickname(guild.id, discord.nickname);
     }
   } catch (error) {
-    console.error(
-      `\`guildAvailable\` failed with error: "${error}"`,
-    );
+    console.error(`\`guildAvailable\` failed with error: "${error}"`);
   }
 };

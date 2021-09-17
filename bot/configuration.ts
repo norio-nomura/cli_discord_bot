@@ -1,12 +1,7 @@
-import { BotConfig, fail } from "../deps.ts";
+import { BotConfig } from "../deps.ts";
 import { eventHandlers } from "./events/eventHandlers.ts";
+import { guardEnv } from "./utils/guardEnv.ts";
 import { shellsplit } from "./utils/shellwords.ts";
-
-async function guardEnv(key: string, defaultValue?: string) {
-  const status = await Deno.permissions.query({ name: "env", variable: key });
-  return status.state === "granted" && Deno.env.get(key) ||
-    (defaultValue != undefined ? defaultValue : fail(`\`${key}\` environment variable is not defined!`));
-}
 
 export const target = {
   /** `TARGET_CLI` */

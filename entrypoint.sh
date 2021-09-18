@@ -18,7 +18,8 @@ TARGET_ARGS_TO_USE_STDIN,\
 TARGET_CLI,\
 TARGET_DEFAULT_ARGS,\
 TIMEOUT_ARGS,\
-TIMEOUT_COMMAND \
+TIMEOUT_COMMAND, \
+WATCHDOG_TARGETS \
     --allow-net \
     --allow-run=/usr/bin/env \
     --quiet \

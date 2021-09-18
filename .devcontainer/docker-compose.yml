@@ -50,6 +50,7 @@ services:
       - TARGET_DEFAULT_ARGS
       - TIMEOUT_ARGS
       - TIMEOUT_COMMAND
+      - WATCHDOG_TARGETS
 
     env_file: ../.env
     tty: true

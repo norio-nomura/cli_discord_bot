@@ -14,7 +14,7 @@
       "runtimeArgs": [
         "run",
         "--inspect",
-        "--allow-env=DISCORD_NICKNAME,DISCORD_PLAYING,DISCORD_TOKEN,ENV_ARGS,ENV_COMMAND,PATH,TARGET_ARGS_TO_USE_STDIN,TARGET_CLI,TARGET_DEFAULT_ARGS,TIMEOUT_ARGS,TIMEOUT_COMMAND",
+        "--allow-env=DISCORD_NICKNAME,DISCORD_PLAYING,DISCORD_TOKEN,ENV_ARGS,ENV_COMMAND,PATH,TARGET_ARGS_TO_USE_STDIN,TARGET_CLI,TARGET_DEFAULT_ARGS,TIMEOUT_ARGS,TIMEOUT_COMMAND,WATCHDOG_TARGETS",
         "--allow-net",
         "--allow-run=/usr/bin/env"
       ],
@@ -33,14 +33,15 @@
       "runtimeArgs": [
         "run",
         "--inspect",
-        "--allow-env=DISCORD_NICKNAME,DISCORD_PLAYING,DISCORD_TOKEN,ENV_ARGS,ENV_COMMAND,PATH,TARGET_ARGS_TO_USE_STDIN,TARGET_CLI,TARGET_DEFAULT_ARGS,TIMEOUT_ARGS,TIMEOUT_COMMAND",
+        "--allow-env=DISCORD_NICKNAME,DISCORD_PLAYING,DISCORD_TOKEN,ENV_ARGS,ENV_COMMAND,PATH,TARGET_ARGS_TO_USE_STDIN,TARGET_CLI,TARGET_DEFAULT_ARGS,TIMEOUT_ARGS,TIMEOUT_COMMAND,WATCHDOG_TARGETS",
         "--allow-net",
         "--allow-run=/usr/bin/env"
       ],
       "attachSimplePort": 9229,
       "env": {
         "TARGET_CLI": "swift",
-        "TARGET_ARGS_TO_USE_STDIN": "-"
+        "TARGET_ARGS_TO_USE_STDIN": "-",
+        "WATCHDOG_TARGETS": "[{\"token\": \"token\", \"host\": \"host\"}]"
       }
     }
   ]

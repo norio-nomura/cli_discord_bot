@@ -1,5 +1,8 @@
 {
   "fmt": {
+    "files": {
+      "exclude": ["devcontainers/.vscode-server/"]
+    },
     "options": {
       "lineWidth": 120,
       "proseWrap": "preserve"

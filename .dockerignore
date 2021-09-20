@@ -1,7 +1,8 @@
-.devcontainer
 .dockerignore
 .env
 .git
+.vscode
+devcontainers
 app.json
 docker-compose.yml
 heroku.yml

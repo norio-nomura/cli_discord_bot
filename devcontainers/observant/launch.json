@@ -1,0 +1,33 @@
+{
+  // IntelliSense を使用して利用可能な属性を学べます。
+  // 既存の属性の説明をホバーして表示します。
+  // 詳細情報は次を確認してください: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Observant Bot",
+      "request": "launch",
+      "type": "pwa-node",
+      "program": "bot.ts",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "deno",
+      "runtimeArgs": [
+        "run",
+        "--inspect",
+        "--allow-env=DISCORD_NICKNAME,DISCORD_PLAYING,DISCORD_TOKEN,ENV_ARGS,ENV_COMMAND,PATH,TARGET_ARGS_TO_USE_STDIN,TARGET_CLI,TARGET_DEFAULT_ARGS,TIMEOUT_ARGS,TIMEOUT_COMMAND,WATCHDOG_TARGETS",
+        "--allow-net",
+        "--allow-run=/usr/bin/env"
+      ],
+      "attachSimplePort": 9229,
+      "env": {
+        // "HTTP_PROXY": "http://host.docker.internal:8888",
+        // "HTTPS_PROXY": "http://host.docker.internal:8888",
+        // "http_proxy": "http://host.docker.internal:8888",
+        // "https_proxy": "http://host.docker.internal:8888",
+        "TARGET_CLI": "cat",
+        "WATCHDOG_TARGETS": "[{\"token\": \"token\", \"host\": \"host\"}]"
+      },
+      "envFile": "${workspaceFolder}/devcontainers/observant/.env"
+    }
+  ]
+}

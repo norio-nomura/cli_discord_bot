@@ -1,0 +1,26 @@
+version: '3'
+services:
+  observant:
+    build:
+      context: devcontainers
+      dockerfile: Dockerfile
+      args:
+        DOCKER_IMAGE: ${DOCKER_IMAGE:-ubuntu:18.04}
+    volumes:
+      - .:/workspace
+      - ./devcontainers/observant/launch.json:/workspace/.vscode/launch.json
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    env_file: devcontainers/observant/.env
+  
+  lazy:
+    user: bot
+    build:
+      context: devcontainers
+      dockerfile: Dockerfile
+      args:
+        DOCKER_IMAGE: ${DOCKER_IMAGE:-swift:4.0}
+    volumes:
+      - .:/workspace
+      - ./devcontainers/lazy/launch.json:/workspace/.vscode/launch.json
+    command: /bin/sh -c "while sleep 1000; do :; done"    
+    env_file: devcontainers/lazy/.env

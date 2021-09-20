@@ -1,0 +1,4 @@
+.dockerignore
+lazy
+observant
+docker-compose.yml

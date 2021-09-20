@@ -1,6 +1,6 @@
 version: '3'
 services:
-  playground:
+  observant:
     user: bot
     build:
       context: .
@@ -20,6 +20,6 @@ services:
       - TIMEOUT_ARGS
       - TIMEOUT_COMMAND
       # - WATCHDOG_TARGETS # should be provided by .env
+
     env_file: .env
     tty: true
- 

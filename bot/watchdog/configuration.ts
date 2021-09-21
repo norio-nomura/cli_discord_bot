@@ -1,5 +1,6 @@
 import { endpoints, User } from "../../deps.ts";
-import { guardEnv } from "../utils/guardEnv.ts";
+import { env } from "../env.ts";
+import { options } from "../options.ts";
 
 export interface WatchdogTarget {
   host: string;
@@ -7,7 +8,7 @@ export interface WatchdogTarget {
   token: string;
 }
 
-const watchdogTargetsEnv = await guardEnv("WATCHDOG_TARGETS");
+const watchdogTargetsEnv = options.WATCHDOG_TARGETS ?? env.WATCHDOG_TARGETS ?? "[]";
 const targets = JSON.parse(watchdogTargetsEnv) as Omit<WatchdogTarget, "id">[];
 const targetWithIDs = await Promise.all(targets.map(async ({ token, host }) => {
   return {
@@ -25,7 +26,7 @@ export const watchdogTargets = new Map<string, WatchdogTarget>(
 
 async function getUserId(token: string): Promise<string> {
   const result = await fetch(endpoints.USER_BOT, { method: "GET", headers: { authorization: `Bot ${token}` } }).then(
-    (response) => response.json()
+    (response) => response.json(),
   ) as User;
   return result.id;
 }

@@ -1,39 +1,36 @@
 import { BotConfig } from "../deps.ts";
 import { eventHandlers } from "./events/eventHandlers.ts";
-import { guardEnv } from "./utils/guardEnv.ts";
+import { env } from "./env.ts";
 import { shellsplit } from "./utils/shellwords.ts";
+import { Defaults, options } from "./options.ts";
 
 export const target = {
   /** `TARGET_CLI` */
-  cli: await guardEnv("TARGET_CLI"),
+  cli: options.TARGET_CLI || new Defaults().TARGET_CLI, // Prefer default value than ""
   /** `TARGET_ARGS_TO_USE_STDIN` */
-  argumentsToUseStdin: shellsplit(
-    await guardEnv("TARGET_ARGS_TO_USE_STDIN", ""),
-  ),
+  argumentsToUseStdin: shellsplit(options.TARGET_ARGS_TO_USE_STDIN ?? ""),
   /** `TARGET_DEFAULT_ARGS` */
-  defaultArguments: shellsplit(await guardEnv("TARGET_DEFAULT_ARGS", "")),
-  /** `PATH` */
-  path: await guardEnv("PATH"),
+  defaultArguments: shellsplit(options.TARGET_DEFAULT_ARGS ?? ""),
 };
 
 export const envCommand: string[] = [
-  await guardEnv("ENV_COMMAND", "/usr/bin/env"),
-  ...shellsplit(await guardEnv("ENV_ARGS", "-i")),
-  ...(["PATH=" + await guardEnv("PATH")]),
+  options.ENV_COMMAND || new Defaults().ENV_COMMAND, // Prefer default value than ""
+  ...shellsplit(options.ENV_ARGS),
+  "PATH=" + env.PATH,
 ];
 
 export const timeoutCommand: string[] = [
-  await guardEnv("TIMEOUT_COMMAND", "timeout"),
-  ...shellsplit(await guardEnv("TIMEOUT_ARGS", "--signal=KILL 30")),
+  options.TIMEOUT_COMMAND || new Defaults().TIMEOUT_COMMAND, // Prefer default value than ""
+  ...shellsplit(options.TIMEOUT_ARGS),
 ];
 
 export const discord = {
   /** `DISCORD_TOKEN` */
-  token: await guardEnv("DISCORD_TOKEN"),
+  token: options.DISCORD_TOKEN ?? env.DISCORD_TOKEN,
   /** `DISCORD_NICKNAME` */
-  nickname: await guardEnv("DISCORD_NICKNAME", target.cli),
+  nickname: options.DISCORD_NICKNAME ?? target.cli,
   /** `DISCORD_PLAYING` */
-  playing: await guardEnv("DISCORD_PLAYING", target.cli),
+  playing: options.DISCORD_PLAYING ?? target.cli,
 };
 
 export const botConfiguration: BotConfig = {

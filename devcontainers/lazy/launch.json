@@ -14,22 +14,31 @@
       "runtimeArgs": [
         "run",
         "--inspect",
-        "--allow-env=DISCORD_NICKNAME,DISCORD_PLAYING,DISCORD_TOKEN,ENV_ARGS,ENV_COMMAND,PATH,TARGET_ARGS_TO_USE_STDIN,TARGET_CLI,TARGET_DEFAULT_ARGS,TIMEOUT_ARGS,TIMEOUT_COMMAND,WATCHDOG_TARGETS",
+        "--allow-env=DISCORD_TOKEN,PATH",
         "--allow-net",
         "--allow-run=/usr/bin/env"
       ],
       "attachSimplePort": 9229,
       "env": {
-        "DISCORD_NICKNAME": "swift-4.0.3",
-        "DISCORD_PLAYING": "swift-4.0.3-RELEASE",
+        // "DISCORD_TOKEN": "", // should be provided by .env
         // "HTTP_PROXY": "http://host.docker.internal:8888",
         // "HTTPS_PROXY": "http://host.docker.internal:8888",
         // "http_proxy": "http://host.docker.internal:8888",
         // "https_proxy": "http://host.docker.internal:8888",
-        "TARGET_ARGS_TO_USE_STDIN": "-",
-        "TARGET_CLI": "swift"
       },
-      "envFile": "${workspaceFolder}/devcontainers/lazy/.env"
+      "envFile": "${workspaceFolder}/devcontainers/lazy/.env",
+      "args": [
+        "--discord-nickname=swift-4.0.3",
+        "--discord-playing=swift-4.0.3-RELEASE",
+        // "--discord-token=", // should be provided by .env
+        // "--env-args=",
+        // "--env-command=",
+        "--target-args-to-use-stdin=-",
+        "--target-cli=swift"
+        // "--target-default-args=",
+        // "--timeout-args=",
+        // "--timeout-command=",
+      ]
     }
   ]
 }

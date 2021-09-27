@@ -7,7 +7,7 @@ fi
 export DENO_TLS_CA_STORE=system
 export TARGET_CLI=${TARGET_CLI:-cat}
 deno run \
-    --allow-env=DISCORD_TOKEN,PATH,WATCHDOG_TARGETS \
+    --allow-env=DISCORD_TOKEN,PATH \
     --allow-net \
     --allow-run=/usr/bin/env \
     --quiet \
@@ -22,5 +22,4 @@ deno run \
     "${TARGET_DEFAULT_ARGS+--target-default_args=}${TARGET_DEFAULT_ARGS}" \
     "${TIMEOUT_ARGS+--timeout-args=}${TIMEOUT_ARGS}" \
     "${TIMEOUT_COMMAND+--timeout-command=}${TIMEOUT_COMMAND}" \
-    "${WATCHDOG_TARGETS+--watchdog-targets=}${WATCHDOG_TARGETS}" \
     || echo "failed"

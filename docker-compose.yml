@@ -19,7 +19,6 @@ services:
       - TARGET_DEFAULT_ARGS
       - TIMEOUT_ARGS
       - TIMEOUT_COMMAND
-      # - WATCHDOG_TARGETS # should be provided by .env
 
     env_file: .env
     tty: true

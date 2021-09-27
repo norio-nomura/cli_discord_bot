@@ -22,8 +22,6 @@ export class Defaults {
   TIMEOUT_ARGS = "--signal=KILL 30";
   /** Timeout command launching target CLI */
   TIMEOUT_COMMAND = "timeout";
-  /** watchdog targets represented in json */
-  WATCHDOG_TARGETS: string | undefined;
 }
 
 export const options = parse(Deno.args, {

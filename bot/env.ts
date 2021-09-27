@@ -14,6 +14,4 @@ export const env = {
   DISCORD_TOKEN: await guardEnv("DISCORD_TOKEN"),
   /** PATH environment variable. It fails if not granted. */
   PATH: await guardEnv("PATH"),
-  /** watchdog targets represented in json */
-  WATCHDOG_TARGETS: await envIfGranted("WATCHDOG_TARGETS"),
 };

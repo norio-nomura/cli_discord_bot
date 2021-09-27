@@ -59,7 +59,6 @@ This is a generalized version of [SwiftCompilerDiscordappBot](https://github.com
 | `TARGET_DEFAULT_ARGS`      | arguments for CLI with no arguments   |                    |
 | `TIMEOUT_COMMAND`          | Timeout command launching target CLI  | `timeout`          |
 | `TIMEOUT_ARGS`             | arguments for timeout command         | `--signal=KILL 30` |
-| `WATCHDOG_TARGETS`         | watchdog targets represented in json  | `[]`               |
 
 ### Examples
 

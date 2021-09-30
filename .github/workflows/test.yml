@@ -5,12 +5,12 @@ on:
     branches: [master]
     paths: 
       - '.github/workflows/test.yml'
-      - 'src/**/*.ts'
+      - 'bot/**/*.ts'
       - '*.ts'
   pull_request:
     paths: 
       - '.github/workflows/test.yml'
-      - 'src/**/*.ts'
+      - 'bot/**/*.ts'
       - '*.ts'
 
 jobs:
@@ -20,4 +20,4 @@ jobs:
       image: denoland/deno:1.14.0
     steps:
       - uses: actions/checkout@v1
-      - run: deno test src
+      - run: deno test bot

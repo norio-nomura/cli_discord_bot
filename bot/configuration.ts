@@ -1,40 +1,53 @@
-import { BotConfig } from "../deps.ts";
+import { BotConfig, fail } from "../deps.ts";
 import { eventHandlers } from "./events/eventHandlers.ts";
-import { env } from "./env.ts";
 import { shellsplit } from "./utils/shellwords.ts";
-import { Defaults, options } from "./options.ts";
+import { Options, options } from "./options.ts";
 
-export const target = {
-  /** `TARGET_CLI` */
-  cli: options.TARGET_CLI || new Defaults().TARGET_CLI, // Prefer default value than ""
-  /** `TARGET_ARGS_TO_USE_STDIN` */
-  argumentsToUseStdin: shellsplit(options.TARGET_ARGS_TO_USE_STDIN ?? ""),
-  /** `TARGET_DEFAULT_ARGS` */
-  defaultArguments: shellsplit(options.TARGET_DEFAULT_ARGS ?? ""),
-};
-
-export const envCommand: string[] = [
-  options.ENV_COMMAND || new Defaults().ENV_COMMAND, // Prefer default value than ""
-  ...shellsplit(options.ENV_ARGS),
-  "PATH=" + env.PATH,
-];
-
-export const timeoutCommand: string[] = [
-  options.TIMEOUT_COMMAND || new Defaults().TIMEOUT_COMMAND, // Prefer default value than ""
-  ...shellsplit(options.TIMEOUT_ARGS),
-];
-
-export const discord = {
-  /** `DISCORD_TOKEN` */
-  token: options.DISCORD_TOKEN ?? env.DISCORD_TOKEN,
-  /** `DISCORD_NICKNAME` */
-  nickname: options.DISCORD_NICKNAME ?? target.cli,
-  /** `DISCORD_PLAYING` */
-  playing: options.DISCORD_PLAYING ?? target.cli,
-};
-
-export const botConfiguration: BotConfig = {
-  token: discord.token,
-  intents: ["Guilds", "GuildMessages", "DirectMessages"],
-  eventHandlers: eventHandlers,
+export const configuration = {
+  get target() {
+    return {
+      /** `TARGET_CLI` */
+      cli: options.TARGET_CLI || new Options().TARGET_CLI, // Prefer default value than ""
+      /** `TARGET_ARGS_TO_USE_STDIN` */
+      argumentsToUseStdin: shellsplit(options.TARGET_ARGS_TO_USE_STDIN ?? ""),
+      /** `TARGET_DEFAULT_ARGS` */
+      defaultArguments: shellsplit(options.TARGET_DEFAULT_ARGS ?? ""),
+    };
+  },
+  get envCommand(): string[] {
+    return [
+      options.ENV_COMMAND || new Options().ENV_COMMAND, // Prefer default value than ""
+      ...shellsplit(options.ENV_ARGS),
+      "PATH=" + (options.ENV_PATH ?? fail("`PATH` environment variable is missing!")),
+    ];
+  },
+  get timeoutCommand(): string[] {
+    return [
+      options.TIMEOUT_COMMAND || new Options().TIMEOUT_COMMAND, // Prefer default value than ""
+      ...shellsplit(options.TIMEOUT_ARGS),
+    ];
+  },
+  get discord() {
+    return {
+      /** `DISCORD_TOKEN` */
+      get token() {
+        return options.DISCORD_TOKEN ?? fail("`DISCORD_TOKEN` is missing!");
+      },
+      /** `DISCORD_NICKNAME` */
+      get nickname() {
+        return options.DISCORD_NICKNAME ?? configuration.target.cli;
+      },
+      /** `DISCORD_PLAYING` */
+      get playing() {
+        return options.DISCORD_PLAYING ?? configuration.target.cli;
+      },
+    };
+  },
+  get bot(): BotConfig {
+    return {
+      token: configuration.discord.token,
+      intents: ["Guilds", "GuildMessages", "DirectMessages"],
+      eventHandlers: eventHandlers,
+    };
+  },
 };

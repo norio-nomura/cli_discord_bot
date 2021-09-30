@@ -1,17 +1,20 @@
 import { Args, parse } from "../deps.ts";
+import { env } from "./env.ts";
 
-export class Defaults {
+export class Options {
   [key: string]: unknown
   /** Discord Nickname */
   DISCORD_NICKNAME: string | undefined;
   /** Discord status for "Playing" */
   DISCORD_PLAYING: string | undefined;
   /** Discord Bot's token */
-  DISCORD_TOKEN: string | undefined = undefined;
+  DISCORD_TOKEN = env.DISCORD_TOKEN;
   /** arguments for Env command */
   ENV_ARGS = "-i";
   /** Env command launching Timeout command */
   ENV_COMMAND = "/usr/bin/env";
+  /** PATH environment variable */
+  ENV_PATH = env.PATH;
   /** arguments for CLI to use standard input */
   TARGET_ARGS_TO_USE_STDIN: string | undefined;
   /** target CLI */
@@ -24,7 +27,12 @@ export class Defaults {
   TIMEOUT_COMMAND = "timeout";
 }
 
-export const options = parse(Deno.args, {
-  default: new Defaults(),
-  alias: Object.fromEntries(Object.keys(Defaults).map((k) => [k, k.toLowerCase().replaceAll("_", "-")])),
-}) as Defaults & Pick<Args, "_">;
+const defaults = new Options();
+const alias = Object.fromEntries(Object.keys(defaults).map((k) => [k, k.toLowerCase().replaceAll("_", "-")]));
+export let options = parse(Deno.args, { default: defaults, alias }) as Options & Pick<Args, "_">;
+export function setOptions(newOptions: Partial<Options>) {
+  options = {
+    ...options,
+    ...newOptions,
+  };
+}

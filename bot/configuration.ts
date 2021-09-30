@@ -18,7 +18,7 @@ export const configuration = {
     return [
       options.ENV_COMMAND || new Options().ENV_COMMAND, // Prefer default value than ""
       ...shellsplit(options.ENV_ARGS),
-      "PATH=" + (options.ENV_PATH ?? fail("`PATH` environment variable is missing!")),
+      "PATH=" + (options.PATH ?? fail("`PATH` environment variable is missing!")),
     ];
   },
   get timeoutCommand(): string[] {

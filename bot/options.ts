@@ -14,7 +14,7 @@ export class Options {
   /** Env command launching Timeout command */
   ENV_COMMAND = "/usr/bin/env";
   /** PATH environment variable */
-  ENV_PATH = env.PATH;
+  PATH = env.PATH;
   /** arguments for CLI to use standard input */
   TARGET_ARGS_TO_USE_STDIN: string | undefined;
   /** target CLI */

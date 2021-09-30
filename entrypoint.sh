@@ -1,8 +1,4 @@
 #!/bin/sh
-if [ "$*" != "" ]; then
-    "$@"
-    exit
-fi
 
 # Avoid passing options via environment variables or comandline arguments
 options="\

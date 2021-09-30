@@ -55,8 +55,8 @@ This is a generalized version of [SwiftCompilerDiscordappBot](https://github.com
 | `ENV_COMMAND`              | Env command launching Timeout command | `/usr/bin/env`     |
 | `ENV_ARGS`                 | arguments for Env command             | `-i`               |
 | `TARGET_CLI`               | target CLI                            | `cat`              |
-| `TARGET_DEFAULT_ARGS`      | arguments for CLI with no arguments   |                    |
 | `TARGET_ARGS_TO_USE_STDIN` | arguments for CLI with input          |                    |
+| `TARGET_DEFAULT_ARGS`      | arguments for CLI with no arguments   |                    |
 | `TIMEOUT_COMMAND`          | Timeout command launching target CLI  | `timeout`          |
 | `TIMEOUT_ARGS`             | arguments for timeout command         | `--signal=KILL 30` |
 

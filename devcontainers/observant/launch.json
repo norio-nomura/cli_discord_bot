@@ -1,0 +1,44 @@
+{
+  // IntelliSense を使用して利用可能な属性を学べます。
+  // 既存の属性の説明をホバーして表示します。
+  // 詳細情報は次を確認してください: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Observant Bot",
+      "request": "launch",
+      "type": "pwa-node",
+      "program": "bot.ts",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "deno",
+      "runtimeArgs": [
+        "run",
+        "--inspect",
+        "--allow-env=DISCORD_TOKEN,PATH",
+        "--allow-net",
+        "--allow-run=/usr/bin/env"
+      ],
+      "attachSimplePort": 9229,
+      "env": {
+        // "DISCORD_TOKEN": "", // should be provided by .env
+        // "HTTP_PROXY": "http://host.docker.internal:8888",
+        // "HTTPS_PROXY": "http://host.docker.internal:8888",
+        // "http_proxy": "http://host.docker.internal:8888",
+        // "https_proxy": "http://host.docker.internal:8888",
+      },
+      "envFile": "${workspaceFolder}/devcontainers/observant/.env",
+      "args": [
+        // "--discord-nickname=",
+        // "--discord-playing=",
+        // "--discord-token=", // should be provided by .env
+        // "--env-args=",
+        // "--env-command=",
+        // "--target-args-to-use-stdin=",
+        "--target-cli=cat"
+        // "--target-default-args=",
+        // "--timeout-args=",
+        // "--timeout-command=",
+      ]
+    }
+  ]
+}

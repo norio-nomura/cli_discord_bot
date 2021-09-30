@@ -18,7 +18,7 @@ RUN deno cache ./deps.ts
 
 # Install remains
 COPY bot.ts entrypoint.sh ./
-COPY src ./src/
+COPY bot ./bot/
 
 # Start Bot
 ENTRYPOINT [ "./entrypoint.sh" ]

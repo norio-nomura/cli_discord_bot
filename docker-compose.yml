@@ -1,6 +1,6 @@
 version: '3'
 services:
-  playground:
+  observant:
     user: bot
     build:
       context: .
@@ -19,6 +19,6 @@ services:
       - TARGET_DEFAULT_ARGS
       - TIMEOUT_ARGS
       - TIMEOUT_COMMAND
+
     env_file: .env
     tty: true
- 

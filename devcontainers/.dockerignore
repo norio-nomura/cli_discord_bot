@@ -1,0 +1,5 @@
+.vscode-server*
+.dockerignore
+lazy
+observant
+docker-compose.yml

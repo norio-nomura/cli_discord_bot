@@ -1,0 +1,3 @@
+.cache
+devcontainers/.vscode-server*
+.env

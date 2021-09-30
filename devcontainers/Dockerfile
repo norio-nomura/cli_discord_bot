@@ -15,3 +15,7 @@ RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true && ap
 # RUN update-ca-certificates
 
 ENV DENO_TLS_CA_STORE=system
+
+ARG USERNAME=bot
+RUN mkdir -p /home/$USERNAME/.vscode-server/extensions /home/$USERNAME/.vscode-server-insiders/extensions && \
+    chown -R $USERNAME /home/$USERNAME/.vscode-server /home/$USERNAME/.vscode-server-insiders

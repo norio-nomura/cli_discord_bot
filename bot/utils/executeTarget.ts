@@ -1,4 +1,4 @@
-import { envCommand, target, timeoutCommand } from "../botConfiguration.ts";
+import { configuration } from "../configuration.ts";
 import { shelljoin, shellsplit } from "./shellwords.ts";
 
 export interface ExecutionResult {
@@ -32,12 +32,12 @@ export async function executeTarget(
     // Setup RunOptions
     const options = shellsplit(commandline);
     const cli = [
-      target.cli,
-      ...(options.length > 0 ? options : target.defaultArguments),
-      ...(input !== undefined ? target.argumentsToUseStdin : []),
+      configuration.target.cli,
+      ...(options.length > 0 ? options : configuration.target.defaultArguments),
+      ...(input !== undefined ? configuration.target.argumentsToUseStdin : []),
     ];
     const opt: Deno.RunOptions = {
-      cmd: [...envCommand, ...timeoutCommand, ...cli],
+      cmd: [...configuration.envCommand, ...configuration.timeoutCommand, ...cli],
       stdin: input ? "piped" : "null",
       stdout: "piped",
       stderr: "piped",

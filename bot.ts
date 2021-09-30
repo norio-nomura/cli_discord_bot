@@ -1,4 +1,9 @@
 import { startBot } from "./deps.ts";
-import { botConfiguration } from "./src/botConfiguration.ts";
+import { configuration } from "./bot/configuration.ts";
+import { setOptions } from "./bot/options.ts";
 
-startBot(botConfiguration);
+setOptions({
+// Set options here
+});
+
+startBot(configuration.bot);

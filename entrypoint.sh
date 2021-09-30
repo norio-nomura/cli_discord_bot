@@ -53,9 +53,9 @@ swift_snapshot_version() {
     done
 }
 
-export DISCORD_NICKNAME=$(nickname)
+export DISCORD_NICKNAME=${DISCORD_NICKNAME:-$(nickname)}
 test -z "${DISCORD_NICKNAME}" && unset DISCORD_NICKNAME
-export DISCORD_PLAYING=$(swift_version)
+export DISCORD_PLAYING=${DISCORD_PLAYING:-$(swift_version)}
 test -z "${DISCORD_PLAYING}" && unset DISCORD_PLAYING
 export TARGET_CLI=${TARGET_CLI:-swift}
 export TARGET_ARGS_TO_USE_STDIN=-

@@ -5,7 +5,7 @@ import { ExecutionResult } from "./executeTarget.ts";
 /** Returns true if the message should be ignored */
 export function shouldIgnore(message: DiscordenoMessage): boolean {
   const targetTypes = [DiscordMessageTypes.Default, DiscordMessageTypes.Reply];
-  return message.isBot || !(message.type in targetTypes);
+  return message.isBot || !targetTypes.includes(message.type);
 }
 
 /** Returns the channel type of the message */

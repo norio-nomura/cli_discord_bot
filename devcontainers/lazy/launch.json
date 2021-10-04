@@ -28,8 +28,8 @@
       },
       "envFile": "${workspaceFolder}/devcontainers/lazy/.env",
       "args": [
-        "--discord-nickname=swift-4.0.3",
-        "--discord-playing=swift-4.0.3-RELEASE",
+        "--discord-nickname=swift-latest",
+        "--discord-playing=swift-latest",
         // "--discord-token=", // should be provided by .env
         // "--env-args=",
         // "--env-command=",

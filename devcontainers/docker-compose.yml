@@ -7,8 +7,8 @@ services:
       args:
         DOCKER_IMAGE: ${DOCKER_IMAGE:-ubuntu:18.04}
     volumes:
-      - ./devcontainers/.vscode-server/extensions:/home/bot/.vscode-server/extensions
-      - ./devcontainers/.vscode-server/extensions:/home/bot/.vscode-server-insiders/extensions
+      - vscode-server:/home/bot/.vscode-server
+      - vscode-server:/home/bot/.vscode-server-insiders
       - .:/workspace
       - ./devcontainers/observant/launch.json:/workspace/.vscode/launch.json
     command: /bin/sh -c "while sleep 1000; do :; done"
@@ -22,9 +22,12 @@ services:
       args:
         DOCKER_IMAGE: ${DOCKER_IMAGE:-swift:latest}
     volumes:
-      - ./devcontainers/.vscode-server/extensions:/home/bot/.vscode-server/extensions
-      - ./devcontainers/.vscode-server/extensions:/home/bot/.vscode-server-insiders/extensions
+      - vscode-server:/home/bot/.vscode-server
+      - vscode-server:/home/bot/.vscode-server-insiders
       - .:/workspace
       - ./devcontainers/lazy/launch.json:/workspace/.vscode/launch.json
     command: /bin/sh -c "while sleep 1000; do :; done"    
     env_file: devcontainers/lazy/.env
+
+volumes:
+  vscode-server:

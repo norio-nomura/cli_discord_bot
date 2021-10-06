@@ -6,17 +6,19 @@
  */
 export function shellsplit(string: string): string[] {
   const words: string[] = [];
-  let field = "";
+  let field: string | undefined;
 
-  const matches = string.matchAll(/\s*(?:([^\s\\\'\"]+)|'([^\']*)'|"((?:[^\"\\]|\\.)*)"|(\\.?)|(\S))(\s?|$)/gm);
+  const matches = string.matchAll(/\s*(?:([^\s\\\'\"]+)|'([^\']*)'|"((?:[^\"\\]|\\.)*)"|(\\.?)|(\S))(\s|$)?/g);
   for (const [, word, sq, dq, esc, garbage, sep] of matches) {
     if (garbage) throw new Error("Unmatched quote: `" + string + "`");
-    field += word || sq || (dq && dq.replace(/\\([$`"\\\n])/g, "\$1")) || (esc && esc.replace(/\\(.)/g, "\$1")) || "";
-    if (typeof sep == "string") { // `sep` can be "", so check the type.
+    const token = word ?? sq ?? (dq && dq.replace(/\\([$`"\\\n])/g, "\$1")) ?? (esc && esc.replace(/\\(.)/g, "\$1"));
+    field = (field ?? "") + token
+    if (sep) { // don't treat '' as separator
       words.push(field);
-      field = "";
+      field = undefined;
     }
   }
+  if (field != undefined) words.push(field);
   return words;
 }
 

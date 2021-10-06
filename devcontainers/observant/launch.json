@@ -39,6 +39,20 @@
         // "--timeout-args=",
         // "--timeout-command=",
       ]
+    },
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "Run Tests",
+      "program": "bot/utils/shellwords.test.ts",
+      "runtimeExecutable": "deno",
+      "cwd": "${workspaceFolder}",
+      "runtimeArgs": [
+        "test",
+        "--inspect-brk"
+      ],
+      "attachSimplePort": 9229,
+      "console": "integratedTerminal"
     }
   ]
 }

@@ -24,8 +24,7 @@
 
   // Add the IDs of extensions you want installed when the container is created.
   "extensions": [
-    "denoland.vscode-deno",
-    "ms-ceintl.vscode-language-pack-ja"
+    "denoland.vscode-deno"
   ],
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.

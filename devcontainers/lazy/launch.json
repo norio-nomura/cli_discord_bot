@@ -20,6 +20,7 @@
       ],
       "attachSimplePort": 9229,
       "env": {
+        "DENO_CERT": "${workspaceFolder}/devcontainers/charles-ssl-proxying-certificate.crt",
         "DENO_DIR": "${workspaceFolder}/.cache",
         // "DISCORD_TOKEN": "", // should be provided by .env
         // "HTTP_PROXY": "http://host.docker.internal:8888",

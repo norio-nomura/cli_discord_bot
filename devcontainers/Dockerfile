@@ -9,14 +9,6 @@ RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true && ap
     apt-get purge --auto-remove -y curl unzip && \
     useradd -m $USERNAME
 
-## Add Charles Proxy's certificate
-# RUN mkdir -p /usr/share/ca-certificates/extra
-# ADD charles-ssl-proxying-certificate.crt /usr/share/ca-certificates/extra/charles-ssl-proxying-certificate.crt
-# RUN echo extra/charles-ssl-proxying-certificate.crt>>/etc/ca-certificates.conf
-# RUN update-ca-certificates
-
-ENV DENO_TLS_CA_STORE=system
-
 RUN DENO_DIR=/workspace/.cache && \
     HOME=/home/$USERNAME && \
     mkdir -p $DENO_DIR $HOME/.vscode-server $HOME/.vscode-server-insiders && \

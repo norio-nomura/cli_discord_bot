@@ -1,73 +1,51 @@
 // Modified version of https://gist.github.com/chrismilson/e6549023bdca1fa9c263973b8f7a713b
 // SeeAlso: https://dev.to/chrismilson/zip-iterator-in-typescript-ldm
+// SeeAlso: https://github.com/joeltg/ziterable
 
-export type Iterableify<T> = { [K in keyof T]: Iterable<T[K]> };
+export type Zipped<T, U = never> = { [k in keyof T]: T[k] extends Iterable<infer V> ? V | U : never };
 
 /**
- * Iterates over multiple iterable objects in parallel.
- *
- * Stops iteration when any of the iterators is done.
+ * Returns a generator that aggregates elements from each of the iterables.
  */
-export function* zip<T extends Array<unknown>>(
-  ...toZip: Iterableify<T>
-): Generator<T, void, undefined> {
+export function* zip<T extends Iterable<unknown>[]>(
+  ...iterables: T
+): Generator<Zipped<T>, void, undefined> {
   // Get iterators from the passed iterables.
-  const iterators = toZip.map((i) => i[Symbol.iterator]());
+  const iterators = iterables.map((i) => i[Symbol.iterator]());
 
-  while (true) {
-    // Advance all of the iterators
+  for (;;) {
     const results = iterators.map((i) => i.next());
-
-    // If any iterators are done, we are done.
     if (results.some(({ done }) => done)) {
       break;
     }
-
-    // Yield the results.
-    yield results.map(({ value }) => value) as T;
-    yield results.map(({ value }) => value) as T;
+    yield results.map(({ value }) => value) as Zipped<T>;
   }
 }
 
+export type ZippedWithFiller<T, U> = T extends Iterable<unknown>[]
+  ? U extends Iterable<unknown> ? Zipped<[...T, U], undefined> : Zipped<T, U>
+  : never;
+
 /**
- * Much the same as `zip`, but stops when all iterators are done.
- *
- * If an iterator is finished, it will yield undefined.
- *
- * Note that this will yield the return value from an iterator as
- * well. For example, the following generator
- *
- * ```ts
- * const g = function*() {
- *  yield 1
- *  return 5
- * }
- * ```
- *
- * will produce the following result:
- *
- * ```ts
- * for (const [a, b] in zipLongest([1, 2, 3], g())) {
- *   console.log(a, b)
- * }
- * // 1 1
- * // 2 5
- * // 3 undefined
- * ```
+ * Returns a generator that aggregates elements from each of the iterables.
+ * If the iterables are of uneven length, missing values are filled-in with
+ * fillvalue.  If the last argument is not `Iterable`, use it for fillvalue,
+ * otherwise use `undefined`.  Iteration continues until the longest iterable is
+ * exhausted.
  */
-export function* zipLongest<T extends Array<unknown>>(
-  ...toZip: Iterableify<T>
-): Generator<Partial<T>, void, unknown> {
-  const iterators = toZip.map((i) => i[Symbol.iterator]());
+export function* zipLongest<T extends Iterable<unknown>[], U>(
+  ...iterablesOrFiller: [...T, U]
+): Generator<ZippedWithFiller<T, U>, void, undefined> {
+  const isIterable = (obj: unknown): obj is Iterable<unknown> =>
+    obj != undefined && !!((obj as Iterable<unknown>)[Symbol.iterator]);
+  const iterators = iterablesOrFiller.filter(isIterable).map((i) => i[Symbol.iterator]());
+  const filler = iterablesOrFiller.find((i) => !isIterable(i));
 
-  while (true) {
+  for (;;) {
     const results = iterators.map((i) => i.next());
-
-    // This is the only difference to zip.
     if (results.every(({ done }) => done)) {
       break;
     }
-
-    yield results.map(({ value }) => value) as Partial<T>;
+    yield results.map(({ value }) => value ?? filler) as ZippedWithFiller<T, U>;
   }
 }

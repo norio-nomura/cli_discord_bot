@@ -81,4 +81,28 @@ Deno.test("zipLongest", () => {
     ["e", 4, undefined],
     ["f", undefined, undefined],
   ]);
+  assertEquals([...zipLongest("abcdef", range(5), range(3), null)], [
+    ["a", 0, 0],
+    ["b", 1, 1],
+    ["c", 2, 2],
+    ["d", 3, null],
+    ["e", 4, null],
+    ["f", null, null],
+  ]);
+  assertEquals([...zipLongest("abcdef", range(5), range(3), undefined)], [
+    ["a", 0, 0],
+    ["b", 1, 1],
+    ["c", 2, 2],
+    ["d", 3, undefined],
+    ["e", 4, undefined],
+    ["f", undefined, undefined],
+  ]);
+  assertEquals([...zipLongest("abcdef", range(5), range(3), {})], [
+    ["a", 0, 0],
+    ["b", 1, 1],
+    ["c", 2, 2],
+    ["d", 3, {}],
+    ["e", 4, {}],
+    ["f", {}, {}],
+  ]);
 });

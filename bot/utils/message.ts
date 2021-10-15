@@ -32,7 +32,7 @@ export function commandlinesFrom(content: string, botId: bigint): string[] | und
   const matches = content.matchAll(patternForMentionToBot);
   const extractMention = (m: RegExpMatchArray) => m[1].replace(/<@!?\d+>/g, "");
   const lines = [...new Set([...matches].map(extractMention))];
-  return lines.length != 0 ? lines : undefined;
+  return lines.length !== 0 ? lines : undefined;
 }
 
 /** Returns the first code block in the message */
@@ -73,6 +73,6 @@ export async function getReplies(channelId: bigint | string, messageId: bigint |
   return msgs.filter((msg) =>
     msg.authorId === botId &&
     msg?.messageReference?.messageId &&
-    msg.messageReference.messageId == messageIdString
+    msg.messageReference.messageId === messageIdString
   ).sort((l, r) => l.timestamp - r.timestamp);
 }

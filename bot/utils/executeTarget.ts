@@ -72,7 +72,7 @@ export async function executeTarget(
       content += "no output";
     }
     if (stdout.length > 0) {
-      const header = status.code != 0 ? "stdout:```\n" : "```\n";
+      const header = status.code !== 0 ? "stdout:```\n" : "```\n";
       const footer = "```";
       const limit = contentMax - content.length - header.length - footer.length;
       if (limit > 0 && stdout.length > limit) {

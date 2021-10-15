@@ -46,7 +46,7 @@ export function codeblockFrom(content: string): string | undefined {
 }
 
 /** Build help message content for replying to the message */
-export async function help(message: DiscordenoMessage) {
+export async function help(message: DiscordenoMessage): Promise<ExecutionResult> {
   const username = message.guild?.bot?.name(message.guildId) || (await getCurrentUser()).username;
   return {
     status: 0,
@@ -58,7 +58,7 @@ Usage:
 \`\u{200b}\`\u{200b}\`\u{200b}
 \`\`\`
 `,
-  } as ExecutionResult;
+  };
 }
 
 const snowflakeFrom = (i: bigint | string): string => typeof i === "string" ? i : i && i.toString() || "";

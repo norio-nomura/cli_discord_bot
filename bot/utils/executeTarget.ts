@@ -36,8 +36,9 @@ export async function executeTarget(
       ...(options.length > 0 ? options : configuration.target.defaultArguments),
       ...(input !== undefined ? configuration.target.argumentsToUseStdin : []),
     ];
+    const cmd = [...configuration.envCommand, ...configuration.timeoutCommand, ...cli];
     const opt: Deno.RunOptions = {
-      cmd: [...configuration.envCommand, ...configuration.timeoutCommand, ...cli],
+      cmd,
       stdin: input ? "piped" : "null",
       stdout: "piped",
       stderr: "piped",
@@ -45,7 +46,7 @@ export async function executeTarget(
 
     // Run target
     const p = Deno.run(opt);
-    console.info(`\`executeTarget\`: \`${shelljoin(opt.cmd as string[])}\``);
+    console.info(`\`executeTarget\`: \`${shelljoin(cmd)}\``);
 
     // Setup stdin
     const stdinWriter = input !== undefined && p.stdin
@@ -103,12 +104,12 @@ export async function executeTarget(
       content,
       stdout: attachOutput ? stdout : undefined,
       stderr: attachError ? stderr : undefined,
-    } as ExecutionResult;
+    };
   } catch (err) {
     Error.captureStackTrace(err, executeTarget);
     return {
       status: -1,
       content: (outputCommandline ? "`" + commandline + "`\n" : "") + `${err}`,
-    } as ExecutionResult;
+    };
   }
 }

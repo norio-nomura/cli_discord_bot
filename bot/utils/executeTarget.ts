@@ -34,12 +34,12 @@ export async function executeTarget(
     const cli = [
       configuration.target.cli,
       ...(options.length > 0 ? options : configuration.target.defaultArguments),
-      ...(input !== undefined ? configuration.target.argumentsToUseStdin : []),
+      ...(input != undefined ? configuration.target.argumentsToUseStdin : []),
     ];
     const cmd = [...configuration.envCommand, ...configuration.timeoutCommand, ...cli];
     const opt: Deno.RunOptions = {
       cmd,
-      stdin: input ? "piped" : "null",
+      stdin: input != undefined ? "piped" : "null",
       stdout: "piped",
       stderr: "piped",
     };
@@ -49,7 +49,7 @@ export async function executeTarget(
     console.info(`\`executeTarget\`: \`${shelljoin(cmd)}\``);
 
     // Setup stdin
-    const stdinWriter = input !== undefined && p.stdin
+    const stdinWriter = input != undefined && p.stdin
       ? p.stdin.write(encode(input)).then(() => p.stdin?.close())
       : Promise.resolve();
 

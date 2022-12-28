@@ -81,27 +81,6 @@ export TARGET_CLI=jq                        # target cli
 docker-compose up
 ```
 
-### Deploy to Heroku
-
-#### Deploy to Heroku Button
-
-You need editing `heroku.yml` to change `DOCKER_IMAGE` before clicking deploy
-button.<br/>
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
-
-#### Deploy Swift 5.4 Compiler Bot in CLI:
-
-```terminal.sh-session
-git clone https://github.com/norio-nomura/cli_discord_bot.git
-cd cli_discord_bot
-heroku container:login
-heroku create
-heroku config:set DISCORD_TOKEN="<discord token here>" TARGET_CLI=swift TARGET_ARGS_TO_USE_STDIN=-
-heroku container:push worker --arg DOCKER_IMAGE=swift:5.4
-```
-
-Configure Dyno on your [Heroku Dashboard](https://dashboard.heroku.com/apps)
-
 ## Author
 
 Norio Nomura

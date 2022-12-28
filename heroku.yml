@@ -1,6 +1,0 @@
-build:
-  docker:
-    worker: Dockerfile
-  config:
-    DOCKER_IMAGE: ubuntu:18.04
-

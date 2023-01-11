@@ -23,7 +23,7 @@ This is a generalized version of [SwiftCompilerDiscordappBot](https://github.com
 
 3. Run bot on local host using `docker compose`
    ```terminal.sh-session
-   export DISCORD_TOKEN="<discord token here>" # discord token, should be provided by `.env`
+   export DISCORD_TOKEN="<discord token here>" # discord token
    docker compose up
    ```
 
@@ -41,9 +41,9 @@ This is a generalized version of [SwiftCompilerDiscordappBot](https://github.com
 
 ### Build time configuration
 
-| Variable Name  | Description                                | default      |
-| -------------- | ------------------------------------------ | ------------ |
-| `DOCKER_IMAGE` | Docker image that provides swift on ubuntu | ubuntu:18.04 |
+| Variable Name  | Description                                | default       |
+| -------------- | ------------------------------------------ | ------------- |
+| `DOCKER_IMAGE` | Docker image that provides swift on ubuntu | ubuntu:latest |
 
 ### Environment variables for run time configurations
 
@@ -65,8 +65,8 @@ This is a generalized version of [SwiftCompilerDiscordappBot](https://github.com
 #### swift 5.4 compiler bot:
 
 ```terminal.sh-session
-export DISCORD_TOKEN="<discord token here>" # discord token, should be provided by `.env`
-export DOCKER_IMAGE=swift:5.4               # docker image
+export DISCORD_TOKEN="<discord token here>" # discord token
+export DOCKER_IMAGE=swift:latest            # docker image
 export TARGET_CLI=swift                     # target cli
 export TARGET_ARGS_TO_USE_STDIN=-           # swift requires "-" to use stdin as code
 docker compose up
@@ -75,8 +75,8 @@ docker compose up
 #### jq bot:
 
 ```terminal.sh-session
-export DISCORD_TOKEN="<discord token here>" # discord token, should be provided by `.env`
-export DOCKER_IMAGE=stedolan/jq             # docker image
+export DISCORD_TOKEN="<discord token here>" # discord token
+export DOCKER_IMAGE=stedolan/jq:latest      # docker image
 export TARGET_CLI=jq                        # target cli
 docker-compose up
 ```

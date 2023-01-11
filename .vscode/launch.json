@@ -16,7 +16,7 @@
         ],
         "attachSimplePort": 9229,
         "console": "integratedTerminal",
-        "envFile": "${workspaceFolder}/.env"
+        "envFile": "${workspaceFolder}/dot.env"
       },
       "osx": {
         "runtimeArgs": [

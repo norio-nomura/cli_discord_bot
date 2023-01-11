@@ -11,7 +11,7 @@ services:
     environment:
       - DISCORD_NICKNAME
       - DISCORD_PLAYING
-      # - DISCORD_TOKEN # should be provided by .env
+      - DISCORD_TOKEN
       - ENV_ARGS
       - ENV_COMMAND
       - TARGET_ARGS_TO_USE_STDIN
@@ -19,6 +19,4 @@ services:
       - TARGET_DEFAULT_ARGS
       - TIMEOUT_ARGS
       - TIMEOUT_COMMAND
-
-    env_file: .env
     tty: true

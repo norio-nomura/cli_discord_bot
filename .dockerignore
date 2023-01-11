@@ -1,8 +1,8 @@
 .devcontainer
 .dockerignore
-.env
 .git
 .github
 .vscode
 docker-compose.yml
+dot.env
 screenshot.png

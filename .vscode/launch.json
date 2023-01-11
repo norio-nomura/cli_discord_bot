@@ -1,0 +1,42 @@
+{
+  // IntelliSense を使用して利用可能な属性を学べます。
+  // 既存の属性の説明をホバーして表示します。
+  // 詳細情報は次を確認してください: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Bot",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "bash",
+      "linux": {
+        "runtimeArgs": [
+          "-c",
+          "awk -v options=\"DISCORD_TOKEN: '${DISCORD_TOKEN}', WATCHDOG_TARGETS: '${WATCHDOG_TARGETS}'\" '{sub(\"// Set options here\", options); print}' ${workspaceFolder}/bot.ts | sudo -u debug env -i PATH=\"${PATH}\" DENO_CERT=\"${workspaceFolder}/.devcontainer/charles-ssl-proxying-certificate.crt\" DENO_TLS_CA_STORE=system deno run --inspect-wait --allow-env=PATH --allow-net --allow-run=/usr/bin/env -"
+        ],
+        "attachSimplePort": 9229,
+        "console": "integratedTerminal",
+        "envFile": "${workspaceFolder}/.env"
+      },
+      "osx": {
+        "runtimeArgs": [
+          "-c",
+          "echo 'Debug Bot' requires container! >&2; exit 1"
+        ],
+        "internalConsoleOptions": "openOnSessionStart"
+      },
+    },
+    {
+      "name": "Run Tests",
+      "request": "launch",
+      "type": "node",
+      "runtimeExecutable": "deno",
+      "runtimeArgs": [
+        "test",
+        "--inspect-wait"
+      ],
+      "attachSimplePort": 9229,
+      "console": "integratedTerminal",
+    }
+  ]
+}

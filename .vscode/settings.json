@@ -9,5 +9,10 @@
   "deno.suggest.completeFunctionCalls": true,
   "deno.suggest.imports.hosts": {
     "https://github.com": false
-  }
+  },
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "terminal.integrated.automationProfile.linux": {
+    "path": "/bin/bash",
+    "icon": "terminal-bash"
+  },
 }

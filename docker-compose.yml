@@ -1,13 +1,10 @@
 version: '3'
 services:
   observant:
-    user: bot
     build:
       context: .
-      dockerfile: Dockerfile
       args:
-        DOCKER_IMAGE: ${DOCKER_IMAGE:-ubuntu:18.04}
-    
+        DOCKER_IMAGE: ${DOCKER_IMAGE:-ubuntu:latest}    
     environment:
       - DISCORD_NICKNAME
       - DISCORD_PLAYING

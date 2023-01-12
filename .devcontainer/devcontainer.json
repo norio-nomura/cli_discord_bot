@@ -1,0 +1,25 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+{
+	"name": "CLI Discord Bot",
+	"dockerComposeFile": [
+		"../docker-compose.yml",
+		"./docker-compose.yml"
+	],
+	"service": "observant",
+	"workspaceFolder": "/workspaces/cli_discord_bot",
+	"mounts": [
+		{
+			"source": "deno-cache-for-bot",
+			"target": "/home/bot/.cache/deno",
+			"type": "volume"
+		},
+		{
+			"source": "deno-cache-for-debug",
+			"target": "/home/debug/.cache/deno",
+			"type": "volume"
+		}
+	],
+	"extensions": [
+		"denoland.vscode-deno"
+	]
+}

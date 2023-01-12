@@ -1,6 +1,5 @@
 {
   "debug.javascript.unmapMissingSources": true,
-  "deno.cache": ".cache",
   "deno.codeLens.implementations": true,
   "deno.codeLens.references": true,
   "deno.codeLens.referencesAllFunctions": true,
@@ -10,5 +9,10 @@
   "deno.suggest.completeFunctionCalls": true,
   "deno.suggest.imports.hosts": {
     "https://github.com": false
-  }
+  },
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "terminal.integrated.automationProfile.linux": {
+    "path": "/bin/bash",
+    "icon": "terminal-bash"
+  },
 }

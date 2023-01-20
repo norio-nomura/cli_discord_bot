@@ -1,8 +1,7 @@
-import { Args, parse } from "../deps.ts";
 import { env } from "./env.ts";
 
 export class Options {
-  [key: string]: unknown
+  [key: string]: unknown;
   /** Discord Nickname */
   DISCORD_NICKNAME: string | undefined;
   /** Discord status for "Playing" */
@@ -27,9 +26,7 @@ export class Options {
   TIMEOUT_COMMAND = "timeout";
 }
 
-const defaults = new Options();
-const alias = Object.fromEntries(Object.keys(defaults).map((k) => [k, k.toLowerCase().replaceAll("_", "-")]));
-export let options = parse(Deno.args, { default: defaults, alias }) as Options & Pick<Args, "_">;
+export let options = new Options();
 export function setOptions(newOptions: Partial<Options>) {
   options = {
     ...options,

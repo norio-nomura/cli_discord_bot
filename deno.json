@@ -1,7 +1,7 @@
 {
   "fmt": {
     "files": {
-      "exclude": [".cache", "devcontainers/.vscode-server/"]
+      "exclude": [".devcontainer", ".vscode"]
     },
     "options": {
       "lineWidth": 120,

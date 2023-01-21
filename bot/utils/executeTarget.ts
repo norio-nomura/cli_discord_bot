@@ -76,7 +76,7 @@ export async function executeTarget(
       const footer = "```";
       const limit = contentMax - content.length - header.length - footer.length;
       if (limit > 0 && stdout.length > limit) {
-        content += header + stdout.substr(0, limit) + footer;
+        content += header + stdout.substring(0, limit) + footer;
         attachOutput = true;
       } else {
         content += header + stdout + footer;
@@ -90,7 +90,7 @@ export async function executeTarget(
         const limit = contentMax - content.length - header.length -
           footer.length;
         if (limit > 0 && stderr.length > limit) {
-          content += header + stderr.substr(0, limit) + footer;
+          content += header + stderr.substring(0, limit) + footer;
           attachError = true;
         } else {
           content += header + stderr + footer;

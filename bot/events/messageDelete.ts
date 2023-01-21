@@ -1,14 +1,14 @@
 import { EventHandlers } from "../../deps.ts";
-import { getReplies, shouldIgnore } from "../utils/message.ts";
 
-export const messageDelete: EventHandlers["messageDelete"] = async function ({ id, channelId }, msg) {
+export const messageDelete: EventHandlers["messageDelete"] = async function (bot, { id, channelId, guildId }, msg) {
   try {
-    if (msg && shouldIgnore(msg)) return;
+    if (msg && msg.shouldBeIgnored) return;
 
     // delete all bot's replies against the message
-    const replies = await getReplies(channelId, id);
-    await Promise.all(replies.map((reply) => reply.delete()));
+    const replies = await bot.helpers.getReplies(channelId, id);
+    await Promise.all(replies.map((reply) => reply.delete(bot)));
   } catch (error) {
-    console.error(`\`messageDelete\`: "${msg?.link}" failed with error: "${error}"`);
+    const link = `https://discord.com/channels/${guildId || "@me"}/${channelId}/${id}`;
+    console.error(`\`messageDelete\`: "${link}" failed with error: "${error}"`);
   }
 };

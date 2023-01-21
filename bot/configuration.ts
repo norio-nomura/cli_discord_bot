@@ -1,7 +1,9 @@
-import { BotConfig, fail } from "../deps.ts";
-import { eventHandlers } from "./events/eventHandlers.ts";
+import { Bot, createBot, fail, GatewayIntents } from "../deps.ts";
+import { events } from "./events/mod.ts";
 import { shellsplit } from "./utils/shellwords.ts";
 import { Options, options } from "./options.ts";
+import { transformers } from "./transformers/mod.ts";
+import { helpers } from "./helpers/mod.ts";
 
 export const configuration = {
   get target() {
@@ -43,11 +45,14 @@ export const configuration = {
       },
     };
   },
-  get bot(): BotConfig {
-    return {
+  get bot(): Bot {
+    return createBot({
       token: configuration.discord.token,
-      intents: ["Guilds", "GuildMessages", "DirectMessages"],
-      eventHandlers: eventHandlers,
-    };
+      intents: GatewayIntents.Guilds | GatewayIntents.GuildMessages | GatewayIntents.DirectMessages,
+      botId: 0n,
+      events,
+      transformers,
+      helpers,
+    });
   },
 };

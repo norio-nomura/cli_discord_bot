@@ -1,5 +1,5 @@
 import { assertEquals } from "../../deps.ts";
-import { codeblockFrom, commandlinesFrom } from "./message.ts";
+import { codeblockFrom, commandlinesFrom } from "./messageContent.ts";
 
 const botId = 80351110224678912n;
 const mentions = {

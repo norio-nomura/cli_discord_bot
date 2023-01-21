@@ -34,7 +34,7 @@ export const messageCreate: EventHandlers["messageCreate"] = async function (bot
       cmds.map((cmd) => canExecute(cmd) ? executeTarget(cmd, input, outputCmd) : bot.helpers.helpResult()),
     );
     for (const result of results) {
-      await bot.helpers.sendReply(msg, result.content);
+      await bot.helpers.sendReply(msg, result);
     }
   } catch (error) {
     const link = `https://discord.com/channels/${msg.guildId || "@me"}/${msg.channelId}/${msg.id}`;

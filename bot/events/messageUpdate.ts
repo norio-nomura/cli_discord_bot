@@ -44,9 +44,9 @@ export const messageUpdate: EventHandlers["messageUpdate"] = async function (bot
 
     for (const [result, reply] of zipLongest(...resultAndReplies)) {
       if (result && reply) {
-        await reply.edit(bot, result.content);
+        await reply.edit(bot, result);
       } else if (result) {
-        await bot.helpers.sendReply(msg, result.content);
+        await bot.helpers.sendReply(msg, result);
       } else if (reply) {
         await reply.delete(bot);
       }

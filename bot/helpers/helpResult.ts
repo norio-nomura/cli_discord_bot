@@ -6,7 +6,6 @@ import { getCurrentUser } from "./getCurrentUser.ts";
 export async function helpResult(bot: Bot): Promise<ExecutionResult> {
   const username = (await getCurrentUser(bot)).username;
   return {
-    status: 0,
     content: `\`\`\`
 Usage:
 @${username} [OPTIONS]

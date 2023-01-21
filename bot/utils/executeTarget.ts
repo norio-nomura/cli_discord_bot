@@ -1,11 +1,10 @@
+import { FileContent } from "../../deps.ts";
 import { configuration } from "../configuration.ts";
 import { shelljoin, shellsplit } from "./shellwords.ts";
 
 export interface ExecutionResult {
-  status: number;
-  content: string;
-  stdout?: string;
-  stderr?: string;
+  content?: string;
+  file?: FileContent[];
 }
 
 const decode = (r: Uint8Array): string => new TextDecoder().decode(r);
@@ -56,8 +55,8 @@ export async function executeTarget(
     // await
     const [status, stdout, stderr] = await Promise.all([
       p.status(),
-      p.output().then(decode),
-      p.stderrOutput().then(decode),
+      p.output(),
+      p.stderrOutput(),
       stdinWriter,
     ]);
 
@@ -71,44 +70,14 @@ export async function executeTarget(
     if (stdout.length === 0 && stderr.length === 0) {
       content += "no output";
     }
-    if (stdout.length > 0) {
-      const header = status.code !== 0 ? "stdout:```\n" : "```\n";
-      const footer = "```";
-      const limit = contentMax - content.length - header.length - footer.length;
-      if (limit > 0 && stdout.length > limit) {
-        content += header + stdout.substring(0, limit) + footer;
-        attachOutput = true;
-      } else {
-        content += header + stdout + footer;
-      }
-    }
-    if (stderr.length > 0) {
-      const header = "stderr:```\n";
-      const footer = "```";
-      const remain = contentMax - content.length;
-      if (remain > header.length + footer.length) {
-        const limit = contentMax - content.length - header.length -
-          footer.length;
-        if (limit > 0 && stderr.length > limit) {
-          content += header + stderr.substring(0, limit) + footer;
-          attachError = true;
-        } else {
-          content += header + stderr + footer;
-        }
-      } else {
-        attachError = true;
-      }
-    }
-    return {
-      status: status.code,
-      content,
-      stdout: attachOutput ? stdout : undefined,
-      stderr: attachError ? stderr : undefined,
-    };
+    const file: FileContent[] = [
+      stdout.length > 0 ? { blob: new Blob([stdout.buffer]), name: "stdout.log"} : undefined,
+      stderr.length > 0 ? { blob: new Blob([stderr.buffer]), name: "stderr.log"} : undefined,
+    ].filter((element): element is FileContent => element !== undefined);
+    return file.length > 0 ?  { content, file } : { content };
   } catch (err) {
     Error.captureStackTrace(err, executeTarget);
     return {
-      status: -1,
       content: (outputCommandline ? "`" + commandline + "`\n" : "") + `${err}`,
     };
   }

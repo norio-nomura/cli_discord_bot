@@ -34,21 +34,22 @@ export async function executeTarget(
     const cli = [
       configuration.target.cli,
       ...(options.length > 0 ? options : configuration.target.defaultArguments),
-      ...(input !== undefined ? configuration.target.argumentsToUseStdin : []),
+      ...(input != undefined ? configuration.target.argumentsToUseStdin : []),
     ];
+    const cmd = [...configuration.envCommand, ...configuration.timeoutCommand, ...cli];
     const opt: Deno.RunOptions = {
-      cmd: [...configuration.envCommand, ...configuration.timeoutCommand, ...cli],
-      stdin: input ? "piped" : "null",
+      cmd,
+      stdin: input != undefined ? "piped" : "null",
       stdout: "piped",
       stderr: "piped",
     };
 
     // Run target
     const p = Deno.run(opt);
-    console.info(`\`executeTarget\`: \`${shelljoin(opt.cmd as string[])}\``);
+    console.info(`\`executeTarget\`: \`${shelljoin(cmd)}\``);
 
     // Setup stdin
-    const stdinWriter = input !== undefined && p.stdin
+    const stdinWriter = input != undefined && p.stdin
       ? p.stdin.write(encode(input)).then(() => p.stdin?.close())
       : Promise.resolve();
 
@@ -71,11 +72,11 @@ export async function executeTarget(
       content += "no output";
     }
     if (stdout.length > 0) {
-      const header = status.code != 0 ? "stdout:```\n" : "```\n";
+      const header = status.code !== 0 ? "stdout:```\n" : "```\n";
       const footer = "```";
       const limit = contentMax - content.length - header.length - footer.length;
       if (limit > 0 && stdout.length > limit) {
-        content += header + stdout.substr(0, limit) + footer;
+        content += header + stdout.substring(0, limit) + footer;
         attachOutput = true;
       } else {
         content += header + stdout + footer;
@@ -89,7 +90,7 @@ export async function executeTarget(
         const limit = contentMax - content.length - header.length -
           footer.length;
         if (limit > 0 && stderr.length > limit) {
-          content += header + stderr.substr(0, limit) + footer;
+          content += header + stderr.substring(0, limit) + footer;
           attachError = true;
         } else {
           content += header + stderr + footer;
@@ -103,12 +104,12 @@ export async function executeTarget(
       content,
       stdout: attachOutput ? stdout : undefined,
       stderr: attachError ? stderr : undefined,
-    } as ExecutionResult;
+    };
   } catch (err) {
     Error.captureStackTrace(err, executeTarget);
     return {
       status: -1,
       content: (outputCommandline ? "`" + commandline + "`\n" : "") + `${err}`,
-    } as ExecutionResult;
+    };
   }
 }

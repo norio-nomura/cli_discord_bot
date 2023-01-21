@@ -1,45 +1,36 @@
-import { DiscordChannelTypes, EventHandlers, startTyping } from "../../deps.ts";
+import { ChannelTypes, EventHandlers } from "../../deps.ts";
 import { executeTarget } from "../utils/executeTarget.ts";
-import {
-  channelTypeOf,
-  codeblock,
-  commandlines,
-  getReplies,
-  help,
-  isMentioned,
-  shouldIgnore,
-} from "../utils/message.ts";
 import { zipLongest } from "../utils/zip.ts";
 
-export const messageUpdate: EventHandlers["messageUpdate"] = async function (msg, oldMsg) {
+export const messageUpdate: EventHandlers["messageUpdate"] = async function (bot, msg, oldMsg) {
   try {
-    if (shouldIgnore(msg)) return;
+    if (msg.shouldBeIgnored) return;
 
-    const channelType = await channelTypeOf(msg);
+    const channelType = (await bot.helpers.getChannel(msg.channelId)).type;
     const isChannelTypeSupported = [
-      DiscordChannelTypes.GuildText,
-      DiscordChannelTypes.GuildPublicThread,
-      DiscordChannelTypes.GuildPrivateThread,
+      ChannelTypes.GuildText,
+      ChannelTypes.PublicThread,
+      ChannelTypes.PrivateThread,
     ].includes(channelType);
-    const isDM = channelType === DiscordChannelTypes.DM;
+    const isDM = channelType === ChannelTypes.DM;
     if (isChannelTypeSupported) {
       // new message may be changed to delete mentions to bot
-      // if (!isMentioned(msg)) return;
+      // if (!msg.mentioning(bot)) return;
     } else if (!isDM) {
       return;
     }
 
     const defaultCmds = isDM ? [""] : [];
-    const oldInput = codeblock(oldMsg);
-    const oldCmds = isMentioned(oldMsg) && commandlines(oldMsg) || defaultCmds;
+    const oldInput = oldMsg?.codeblock;
+    const oldCmds = oldMsg?.commandlinesFor(bot) || defaultCmds;
 
-    const input = codeblock(msg);
-    const cmds = isMentioned(msg) && commandlines(msg) || defaultCmds;
+    const input = msg.codeblock;
+    const cmds = msg.commandlinesFor(bot) || defaultCmds;
     // Is the message changed from the old message?
     if (input === oldInput && JSON.stringify(cmds) === JSON.stringify(oldCmds)) return;
 
     if (cmds.length > 0) {
-      await startTyping(msg.channelId);
+      await bot.helpers.startTyping(msg.channelId);
     }
 
     // if input or commandline is not empty, bot can execute target
@@ -47,20 +38,21 @@ export const messageUpdate: EventHandlers["messageUpdate"] = async function (msg
     // if multple replies are needed, content should include commandline
     const outputCmd = cmds.length > 1 ? true : false;
     const resultsPromise = Promise.all(
-      cmds.map((cmd) => canExecute(cmd) ? executeTarget(cmd, input, outputCmd) : help(msg)),
+      cmds.map((cmd) => canExecute(cmd) ? executeTarget(cmd, input, outputCmd) : bot.helpers.helpResult()),
     );
-    const resultAndReplies = await Promise.all([resultsPromise, getReplies(msg.channelId, msg.id)]);
+    const resultAndReplies = await Promise.all([resultsPromise, bot.helpers.getReplies(msg.channelId, msg.id)]);
 
     for (const [result, reply] of zipLongest(...resultAndReplies)) {
       if (result && reply) {
-        await reply.edit(result.content);
+        await reply.edit(bot, result.content);
       } else if (result) {
-        await msg.reply(result.content);
+        await bot.helpers.sendReply(msg, result.content);
       } else if (reply) {
-        await reply.delete();
+        await reply.delete(bot);
       }
     }
   } catch (error) {
-    console.error(`\`messageUpdate\`: "${msg.link}" failed with error: "${error}"`);
+    const link = `https://discord.com/channels/${msg.guildId || "@me"}/${msg.channelId}/${msg.id}`;
+    console.error(`\`messageUpdate\`: "${link}" failed with error: "${error}"`);
   }
 };

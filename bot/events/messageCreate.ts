@@ -1,30 +1,29 @@
-import { DiscordChannelTypes, EventHandlers, startTyping } from "../../deps.ts";
+import { ChannelTypes, EventHandlers } from "../../deps.ts";
 import { executeTarget } from "../utils/executeTarget.ts";
-import { channelTypeOf, codeblock, commandlines, help, isMentioned, shouldIgnore } from "../utils/message.ts";
 
-export const messageCreate: EventHandlers["messageCreate"] = async function (msg) {
+export const messageCreate: EventHandlers["messageCreate"] = async function (bot, msg) {
   try {
-    if (shouldIgnore(msg)) return;
+    if (msg.shouldBeIgnored) return;
 
-    const channelType = await channelTypeOf(msg);
+    const channelType = (await bot.helpers.getChannel(msg.channelId)).type;
     const isChannelTypeSupported = [
-      DiscordChannelTypes.GuildText,
-      DiscordChannelTypes.GuildPublicThread,
-      DiscordChannelTypes.GuildPrivateThread,
+      ChannelTypes.GuildText,
+      ChannelTypes.PublicThread,
+      ChannelTypes.PrivateThread,
     ].includes(channelType);
-    const isDM = channelType === DiscordChannelTypes.DM;
+    const isDM = channelType === ChannelTypes.DM;
     if (isChannelTypeSupported) {
-      if (!isMentioned(msg)) return;
+      if (!msg.mentioning(bot)) return;
     } else if (!isDM) {
       return;
     }
 
     const defaultCmds = isDM ? [""] : [];
-    const input = codeblock(msg);
-    const cmds = isMentioned(msg) && commandlines(msg) || defaultCmds;
+    const input = msg.codeblock;
+    const cmds = msg.commandlinesFor(bot) || defaultCmds;
 
     if (cmds.length > 0) {
-      await startTyping(msg.channelId);
+      await bot.helpers.startTyping(msg.channelId);
     }
 
     // if input or commandline is not empty, bot can execute target
@@ -32,12 +31,13 @@ export const messageCreate: EventHandlers["messageCreate"] = async function (msg
     // if multple replies are needed, content should include commandline
     const outputCmd = cmds.length > 1 ? true : false;
     const results = await Promise.all(
-      cmds.map((cmd) => canExecute(cmd) ? executeTarget(cmd, input, outputCmd) : help(msg)),
+      cmds.map((cmd) => canExecute(cmd) ? executeTarget(cmd, input, outputCmd) : bot.helpers.helpResult()),
     );
     for (const result of results) {
-      await msg.reply(result.content);
+      await bot.helpers.sendReply(msg, result.content);
     }
   } catch (error) {
-    console.error(`\`messageCreate\`: "${msg.link}" failed with error: "${error}"`);
+    const link = `https://discord.com/channels/${msg.guildId || "@me"}/${msg.channelId}/${msg.id}`;
+    console.error(`\`messageCreate\`: "${link}" failed with error: "${error}"`);
   }
 };

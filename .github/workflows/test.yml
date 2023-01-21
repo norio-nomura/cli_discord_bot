@@ -17,7 +17,7 @@ jobs:
   Deno:
     runs-on: ubuntu-latest
     container:
-      image: denoland/deno:1.14.0
+      image: denoland/deno:latest
     steps:
       - uses: actions/checkout@v1
       - run: deno test bot

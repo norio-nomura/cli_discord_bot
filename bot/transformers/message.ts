@@ -10,7 +10,7 @@ declare module "../../deps.ts" {
      * Commandlines are captured between mention to bot and end of line.
      */
     commandlinesFor: (bot: Bot) => string[] | undefined;
-    edit: (bot: Bot, content: string | EditMessage) => Promise<Message>;
+    edit: (bot: Bot, content: EditMessage) => Promise<Message>;
     delete: (bot: Bot) => Promise<void>;
     /** Returns true if the message mentioned bot */
     mentioning: (bot: Bot) => boolean;
@@ -29,8 +29,13 @@ export const transformExtendedMessage = (
       return codeblockFrom(message.content);
     },
     commandlinesFor: (bot: Bot) => message.mentioning(bot) ? commandlinesFrom(message.content, bot.id) : undefined,
-    edit: (bot: Bot, content: string | EditMessage) =>
-      bot.helpers.editMessage(message.channelId, message.id, typeof content == "string" ? { content } : content),
+    edit: (bot: Bot, content: EditMessage) => {
+      return bot.helpers.editMessage(
+        message.channelId,
+        message.id,
+        { ...content, attachments: [] },
+      );
+    },
     delete: (bot: Bot) => bot.helpers.deleteMessage(message.channelId, message.id),
     mentioning: (bot: Bot) => isMentioned(bot, message),
     get shouldBeIgnored(): boolean {

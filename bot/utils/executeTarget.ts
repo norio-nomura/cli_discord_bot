@@ -24,8 +24,6 @@ export async function executeTarget(
 ): Promise<ExecutionResult> {
   const contentMax = 2000;
   let content = "";
-  let attachOutput = false;
-  let attachError = false;
 
   try {
     // Setup RunOptions
@@ -69,12 +67,31 @@ export async function executeTarget(
     }
     if (stdout.length === 0 && stderr.length === 0) {
       content += "no output";
+      return { content };
     }
-    const file: FileContent[] = [
-      stdout.length > 0 ? { blob: new Blob([stdout.buffer]), name: "stdout.log"} : undefined,
-      stderr.length > 0 ? { blob: new Blob([stderr.buffer]), name: "stderr.log"} : undefined,
-    ].filter((element): element is FileContent => element !== undefined);
-    return file.length > 0 ?  { content, file } : { content };
+    const maxOutputLineNumber = 20;
+    const lineNumberWithUploadingFile = 3;
+    const file: FileContent[] = [];
+    const outputs = [
+      { name: "stdout", output: stdout },
+      { name: "stderr", output: stderr },
+    ];
+    for (const { name, output } of outputs) {
+      if (output.length > 0) {
+        const header = name == "stdout" && status.code !== 0 ? "stdout:```\n" : "```\n";
+        const footer = "```";
+        const limit = contentMax - content.length - header.length - footer.length;
+        const outputString = decode(output);
+        const headLines = outputString.substring(0, limit).split("\n", maxOutputLineNumber + 1);
+        if (headLines.length > maxOutputLineNumber || outputString.length > limit) {
+          content += header + headLines.slice(0, lineNumberWithUploadingFile).join("\n") + footer;
+          file.push({ blob: new Blob([output.buffer]), name: `${name}.log` });
+        } else {
+          content += header + outputString + footer;
+        }
+      }
+    }
+    return file.length > 0 ? { content, file } : { content };
   } catch (err) {
     Error.captureStackTrace(err, executeTarget);
     return {

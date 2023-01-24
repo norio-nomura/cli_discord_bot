@@ -22,6 +22,7 @@ export async function executeTarget(
   input?: string,
   outputCommandline = false,
 ): Promise<ExecutionResult> {
+  const cwd = Deno.makeTempDirSync();
   const contentMax = 2000;
   let content = "";
 
@@ -36,6 +37,7 @@ export async function executeTarget(
     const cmd = [...configuration.envCommand, ...configuration.timeoutCommand, ...cli];
     const opt: Deno.RunOptions = {
       cmd,
+      cwd,
       stdin: input != undefined ? "piped" : "null",
       stdout: "piped",
       stderr: "piped",
@@ -67,7 +69,6 @@ export async function executeTarget(
     }
     if (stdout.length === 0 && stderr.length === 0) {
       content += "no output";
-      return { content };
     }
 
     // Upload outputs as files if `output.length` > 2000 or `output` contains 20+ lines
@@ -93,6 +94,14 @@ export async function executeTarget(
         }
       }
     }
+
+    // Upload Result Files
+    const resultFiles = [...Deno.readDirSync(cwd)].filter((e) => e.isFile);
+    for (const { name } of resultFiles) {
+      const blob = new Blob([Deno.readFileSync(cwd + "/" + name).buffer]);
+      file.push({ name, blob });
+    }
+
     return file.length > 0 ? { content, file } : { content };
   } catch (err) {
     Error.captureStackTrace(err, executeTarget);

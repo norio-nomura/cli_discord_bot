@@ -69,9 +69,11 @@ export async function executeTarget(
       content += "no output";
       return { content };
     }
-    const maxOutputLineNumber = 20;
-    const lineNumberWithUploadingFile = 3;
+
+    // Upload outputs as files if `output.length` > 2000 or `output` contains 20+ lines
     const file: FileContent[] = [];
+    const maxLinesToEmbed = configuration.output.numberOfLinesToEmbed;
+    const previewLinesForUploaded = configuration.output.numberOfLinesToEmbedUploaded;
     const outputs = [
       { name: "stdout", output: stdout },
       { name: "stderr", output: stderr },
@@ -82,9 +84,9 @@ export async function executeTarget(
         const footer = "```";
         const limit = contentMax - content.length - header.length - footer.length;
         const outputString = decode(output);
-        const headLines = outputString.substring(0, limit).split("\n", maxOutputLineNumber + 1);
-        if (headLines.length > maxOutputLineNumber || outputString.length > limit) {
-          content += header + headLines.slice(0, lineNumberWithUploadingFile).join("\n") + footer;
+        const headLines = outputString.substring(0, limit).split("\n", maxLinesToEmbed + 1);
+        if (headLines.length > maxLinesToEmbed || outputString.length > limit) {
+          content += header + headLines.slice(0, previewLinesForUploaded).join("\n") + footer;
           file.push({ blob: new Blob([output.buffer]), name: `${name}.log` });
         } else {
           content += header + outputString + footer;

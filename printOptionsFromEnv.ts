@@ -3,6 +3,8 @@ import { writeAllSync } from "./deps.ts";
 
 const keyOfOptions = Object.keys(new Options()) as (keyof Options)[];
 const valueConverters: { [key in keyof Options]?: (value: string) => Options[key] } = {
+  NUMBER_OF_LINES_TO_EMBED_OUTPUT: parseInt,
+  NUMBER_OF_LINES_TO_EMBED_UPLOADED_OUTPUT: parseInt,
 };
 
 export const optionsFromEnv = await keyOfOptions.reduce(async (envPromise, key) => {

@@ -17,6 +17,10 @@ export class Options {
   ENV_ARGS = "-i";
   /** Env command launching Timeout command */
   ENV_COMMAND = "/usr/bin/env";
+  /** Upload output as file if contains more lines than */
+  NUMBER_OF_LINES_TO_EMBED_OUTPUT = 20;
+  /** Embed preview lines of uploaded output to content */
+  NUMBER_OF_LINES_TO_EMBED_UPLOADED_OUTPUT = 3;
   /** PATH environment variable */
   PATH = requiredEnv.PATH;
   /** arguments for CLI to use standard input */

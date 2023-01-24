@@ -20,7 +20,7 @@ export const configuration = {
     return [
       options.ENV_COMMAND || new Options().ENV_COMMAND, // Prefer default value than ""
       ...shellsplit(options.ENV_ARGS),
-      "PATH=" + (options.PATH ?? fail("`PATH` environment variable is missing!")),
+      "PATH=" + (options.PATH || fail("`PATH` environment variable is missing!")),
     ];
   },
   get timeoutCommand(): string[] {
@@ -33,7 +33,7 @@ export const configuration = {
     return {
       /** `DISCORD_TOKEN` */
       get token() {
-        return options.DISCORD_TOKEN ?? fail("`DISCORD_TOKEN` is missing!");
+        return options.DISCORD_TOKEN || fail("`DISCORD_TOKEN` is missing!");
       },
       /** `DISCORD_NICKNAME` */
       get nickname() {

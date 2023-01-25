@@ -20,4 +20,5 @@ jobs:
       image: denoland/deno:latest
     steps:
       - uses: actions/checkout@v1
+      - run: deno check bot.ts mod.ts printOptionsFromEnv.ts
       - run: deno test bot

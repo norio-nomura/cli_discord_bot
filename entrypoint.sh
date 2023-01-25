@@ -8,6 +8,7 @@ exec env -i PATH=${PATH} DENO_TLS_CA_STORE=system deno run \
     --allow-read=${TMPDIR:-/tmp} \
     --allow-write=${TMPDIR:-/tmp} \
     --quiet \
+    "$@" \
     bot.ts <<EOF
 $(deno run -A printOptionsFromEnv.ts)
 EOF

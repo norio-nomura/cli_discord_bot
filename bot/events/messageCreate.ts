@@ -19,7 +19,7 @@ export const messageCreate: EventHandlers["messageCreate"] = async function (bot
     }
 
     const defaultCmds = isDM ? [""] : [];
-    const input = msg.codeblock;
+    const input = await msg.inputFromAttachments() || msg.codeblock;
     const cmds = msg.commandlinesFor(bot) || defaultCmds;
 
     if (cmds.length > 0) {

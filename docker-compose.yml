@@ -6,6 +6,7 @@ services:
       args:
         DOCKER_IMAGE: ${DOCKER_IMAGE:-ubuntu:latest}    
     environment:
+      - ATTACHMENT_EXTENSION_TO_TREAT_AS_INPUT=.swift
       - DISCORD_NICKNAME
       - DISCORD_PLAYING
       - DISCORD_TOKEN

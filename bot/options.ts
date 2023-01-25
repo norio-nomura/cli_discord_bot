@@ -7,6 +7,8 @@ export const requiredEnv = {
 
 // Declare Options class and default values.
 export class Options {
+  /** The first attachment with this extension found is treated as input */
+  ATTACHMENT_EXTENSION_TO_TREAT_AS_INPUT = "";
   /** Discord Nickname */
   DISCORD_NICKNAME: string | undefined;
   /** Discord status for "Playing" */

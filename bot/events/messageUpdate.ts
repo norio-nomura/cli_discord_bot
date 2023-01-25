@@ -21,10 +21,10 @@ export const messageUpdate: EventHandlers["messageUpdate"] = async function (bot
     }
 
     const defaultCmds = isDM ? [""] : [];
-    const oldInput = oldMsg?.codeblock;
+    const oldInput = await oldMsg?.inputFromAttachments() || oldMsg?.codeblock;
     const oldCmds = oldMsg?.commandlinesFor(bot) || defaultCmds;
 
-    const input = msg.codeblock;
+    const input = await msg.inputFromAttachments() || msg.codeblock;
     const cmds = msg.commandlinesFor(bot) || defaultCmds;
     // Is the message changed from the old message?
     if (input === oldInput && JSON.stringify(cmds) === JSON.stringify(oldCmds)) return;

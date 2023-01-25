@@ -1,7 +1,6 @@
 #!/bin/sh
 
 # Avoid passing options via environment variables or comandline arguments
-deno run -A printOptionsFromEnv.ts | \
 exec env -i PATH=${PATH} DENO_TLS_CA_STORE=system deno run \
     --allow-env=PATH \
     --allow-net \
@@ -9,4 +8,6 @@ exec env -i PATH=${PATH} DENO_TLS_CA_STORE=system deno run \
     --allow-read=${TMPDIR:-/tmp} \
     --allow-write=${TMPDIR:-/tmp} \
     --quiet \
-    bot.ts
+    bot.ts <<EOF
+$(deno run -A printOptionsFromEnv.ts)
+EOF

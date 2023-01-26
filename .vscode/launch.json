@@ -12,11 +12,11 @@
       "linux": {
         "runtimeArgs": [
           "-c",
-          "awk -v options=\"DISCORD_TOKEN: '${DISCORD_TOKEN}', WATCHDOG_TARGETS: '${WATCHDOG_TARGETS}'\" '{sub(\"// Set options here\", options); print}' ${workspaceFolder}/bot.ts | sudo -u debug env -i PATH=\"${PATH}\" DENO_CERT=\"${workspaceFolder}/.devcontainer/charles-ssl-proxying-certificate.crt\" DENO_TLS_CA_STORE=system deno run --inspect-wait --allow-env=PATH --allow-net --allow-run=/usr/bin/env -"
+          "sudo -u debug --preserve-env=DISCORD_TOKEN ${workspaceFolder}/entrypoint.sh --inspect-wait"
         ],
         "attachSimplePort": 9229,
         "console": "integratedTerminal",
-        "envFile": "${workspaceFolder}/dot.env"
+        "envFile": "${workspaceFolder}/dot.env",
       },
       "osx": {
         "runtimeArgs": [

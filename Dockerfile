@@ -21,7 +21,7 @@ COPY deps.ts ./
 RUN deno cache --quiet ./deps.ts
 
 # Install remains
-COPY bot.ts entrypoint.sh mod.ts ./
+COPY bot.ts entrypoint.sh mod.ts printOptionsFromEnv.ts ./
 COPY bot ./bot/
 
 # Start Bot

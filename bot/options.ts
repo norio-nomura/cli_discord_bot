@@ -1,19 +1,30 @@
-import { env } from "./env.ts";
+import { fail } from "../deps.ts";
+import { envIfGranted } from "./utils/envIfGranted.ts";
 
+export const requiredEnv = {
+  PATH: await envIfGranted("PATH") || fail("`PATH` environment variable is missing!"),
+};
+
+// Declare Options class and default values.
 export class Options {
-  [key: string]: unknown;
+  /** The first attachment with this extension found is treated as input */
+  ATTACHMENT_EXTENSION_TO_TREAT_AS_INPUT = "";
   /** Discord Nickname */
   DISCORD_NICKNAME: string | undefined;
   /** Discord status for "Playing" */
   DISCORD_PLAYING: string | undefined;
   /** Discord Bot's token */
-  DISCORD_TOKEN = env.DISCORD_TOKEN;
+  DISCORD_TOKEN = "";
   /** arguments for Env command */
   ENV_ARGS = "-i";
   /** Env command launching Timeout command */
   ENV_COMMAND = "/usr/bin/env";
+  /** Upload output as file if contains more lines than */
+  NUMBER_OF_LINES_TO_EMBED_OUTPUT = 20;
+  /** Embed preview lines of uploaded output to content */
+  NUMBER_OF_LINES_TO_EMBED_UPLOADED_OUTPUT = 3;
   /** PATH environment variable */
-  PATH = env.PATH;
+  PATH = requiredEnv.PATH;
   /** arguments for CLI to use standard input */
   TARGET_ARGS_TO_USE_STDIN: string | undefined;
   /** target CLI */

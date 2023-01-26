@@ -1,11 +1,10 @@
+import { FileContent } from "../../deps.ts";
 import { configuration } from "../configuration.ts";
 import { shelljoin, shellsplit } from "./shellwords.ts";
 
 export interface ExecutionResult {
-  status: number;
-  content: string;
-  stdout?: string;
-  stderr?: string;
+  content?: string;
+  file?: FileContent[];
 }
 
 const decode = (r: Uint8Array): string => new TextDecoder().decode(r);
@@ -23,10 +22,9 @@ export async function executeTarget(
   input?: string,
   outputCommandline = false,
 ): Promise<ExecutionResult> {
+  const cwd = Deno.makeTempDirSync();
   const contentMax = 2000;
   let content = "";
-  let attachOutput = false;
-  let attachError = false;
 
   try {
     // Setup RunOptions
@@ -39,6 +37,7 @@ export async function executeTarget(
     const cmd = [...configuration.envCommand, ...configuration.timeoutCommand, ...cli];
     const opt: Deno.RunOptions = {
       cmd,
+      cwd,
       stdin: input != undefined ? "piped" : "null",
       stdout: "piped",
       stderr: "piped",
@@ -56,8 +55,8 @@ export async function executeTarget(
     // await
     const [status, stdout, stderr] = await Promise.all([
       p.status(),
-      p.output().then(decode),
-      p.stderrOutput().then(decode),
+      p.output(),
+      p.stderrOutput(),
       stdinWriter,
     ]);
 
@@ -71,44 +70,42 @@ export async function executeTarget(
     if (stdout.length === 0 && stderr.length === 0) {
       content += "no output";
     }
-    if (stdout.length > 0) {
-      const header = status.code !== 0 ? "stdout:```\n" : "```\n";
-      const footer = "```";
-      const limit = contentMax - content.length - header.length - footer.length;
-      if (limit > 0 && stdout.length > limit) {
-        content += header + stdout.substring(0, limit) + footer;
-        attachOutput = true;
-      } else {
-        content += header + stdout + footer;
-      }
-    }
-    if (stderr.length > 0) {
-      const header = "stderr:```\n";
-      const footer = "```";
-      const remain = contentMax - content.length;
-      if (remain > header.length + footer.length) {
-        const limit = contentMax - content.length - header.length -
-          footer.length;
-        if (limit > 0 && stderr.length > limit) {
-          content += header + stderr.substring(0, limit) + footer;
-          attachError = true;
+
+    // Upload outputs as files if `output.length` > 2000 or `output` contains 20+ lines
+    const file: FileContent[] = [];
+    const maxLinesToEmbed = configuration.output.numberOfLinesToEmbed;
+    const previewLinesForUploaded = configuration.output.numberOfLinesToEmbedUploaded;
+    const outputs = [
+      { name: "stdout", output: stdout },
+      { name: "stderr", output: stderr },
+    ];
+    for (const { name, output } of outputs) {
+      if (output.length > 0) {
+        const header = name == "stdout" && status.code !== 0 ? "stdout:```\n" : "```\n";
+        const footer = "```";
+        const limit = contentMax - content.length - header.length - footer.length;
+        const outputString = decode(output);
+        const headLines = outputString.substring(0, limit).split("\n", maxLinesToEmbed + 1);
+        if (headLines.length > maxLinesToEmbed || outputString.length > limit) {
+          content += header + headLines.slice(0, previewLinesForUploaded).join("\n") + footer;
+          file.push({ blob: new Blob([output.buffer]), name: `${name}.log` });
         } else {
-          content += header + stderr + footer;
+          content += header + outputString + footer;
         }
-      } else {
-        attachError = true;
       }
     }
-    return {
-      status: status.code,
-      content,
-      stdout: attachOutput ? stdout : undefined,
-      stderr: attachError ? stderr : undefined,
-    };
+
+    // Upload Result Files
+    const resultFiles = [...Deno.readDirSync(cwd)].filter((e) => e.isFile);
+    for (const { name } of resultFiles) {
+      const blob = new Blob([Deno.readFileSync(cwd + "/" + name).buffer]);
+      file.push({ name, blob });
+    }
+
+    return file.length > 0 ? { content, file } : { content };
   } catch (err) {
     Error.captureStackTrace(err, executeTarget);
     return {
-      status: -1,
       content: (outputCommandline ? "`" + commandline + "`\n" : "") + `${err}`,
     };
   }

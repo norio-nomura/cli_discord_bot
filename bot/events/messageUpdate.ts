@@ -21,10 +21,10 @@ export const messageUpdate: EventHandlers["messageUpdate"] = async function (bot
     }
 
     const defaultCmds = isDM ? [""] : [];
-    const oldInput = oldMsg?.codeblock;
+    const oldInput = await oldMsg?.inputFromAttachments() || oldMsg?.codeblock;
     const oldCmds = oldMsg?.commandlinesFor(bot) || defaultCmds;
 
-    const input = msg.codeblock;
+    const input = await msg.inputFromAttachments() || msg.codeblock;
     const cmds = msg.commandlinesFor(bot) || defaultCmds;
     // Is the message changed from the old message?
     if (input === oldInput && JSON.stringify(cmds) === JSON.stringify(oldCmds)) return;
@@ -44,9 +44,9 @@ export const messageUpdate: EventHandlers["messageUpdate"] = async function (bot
 
     for (const [result, reply] of zipLongest(...resultAndReplies)) {
       if (result && reply) {
-        await reply.edit(bot, result.content);
+        await reply.edit(bot, result);
       } else if (result) {
-        await bot.helpers.sendReply(msg, result.content);
+        await bot.helpers.sendReply(msg, result);
       } else if (reply) {
         await reply.delete(bot);
       }

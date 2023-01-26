@@ -2,7 +2,7 @@ import { ChannelTypes, EventHandlers } from "../../deps.ts";
 import { executeTarget } from "../utils/executeTarget.ts";
 import { zipLongest } from "../utils/zip.ts";
 
-export const messageUpdate: EventHandlers["messageUpdate"] = async function (bot, msg, oldMsg) {
+export const messageUpdate: EventHandlers["messageUpdate"] = async function (bot, msg) {
   try {
     if (msg.shouldBeIgnored) return;
 
@@ -21,13 +21,8 @@ export const messageUpdate: EventHandlers["messageUpdate"] = async function (bot
     }
 
     const defaultCmds = isDM ? [""] : [];
-    const oldInput = await oldMsg?.inputFromAttachments() || oldMsg?.codeblock;
-    const oldCmds = oldMsg?.commandlinesFor(bot) || defaultCmds;
-
     const input = await msg.inputFromAttachments() || msg.codeblock;
     const cmds = msg.commandlinesFor(bot) || defaultCmds;
-    // Is the message changed from the old message?
-    if (input === oldInput && JSON.stringify(cmds) === JSON.stringify(oldCmds)) return;
 
     if (cmds.length > 0) {
       await bot.helpers.startTyping(msg.channelId);

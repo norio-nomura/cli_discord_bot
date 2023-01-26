@@ -1,9 +1,7 @@
 import { EventHandlers } from "../../deps.ts";
 
-export const messageDelete: EventHandlers["messageDelete"] = async function (bot, { id, channelId, guildId }, msg) {
+export const messageDelete: EventHandlers["messageDelete"] = async function (bot, { id, channelId, guildId }) {
   try {
-    if (msg && msg.shouldBeIgnored) return;
-
     // delete all bot's replies against the message
     const replies = await bot.helpers.getReplies(channelId, id);
     await Promise.all(replies.map((reply) => reply.delete(bot)));

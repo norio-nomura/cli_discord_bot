@@ -8,17 +8,22 @@
       "name": "Debug Bot",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "bash",
       "linux": {
+        "runtimeExecutable": "sudo",
         "runtimeArgs": [
-          "-c",
-          "sudo -u debug --preserve-env=DISCORD_TOKEN ${workspaceFolder}/entrypoint.sh --inspect-wait"
+          "-u",
+          "debug",
+          "--preserve-env=DISCORD_TOKEN,HTTP_PROXY,HTTPS_PROXY",
+          "${workspaceFolder}/entrypoint.sh",
+          "--cert=${workspaceFolder}/.devcontainer/charles-ssl-proxying-certificate.crt",
+          "--inspect-wait"
         ],
         "attachSimplePort": 9229,
         "console": "integratedTerminal",
         "envFile": "${workspaceFolder}/dot.env",
       },
       "osx": {
+        "runtimeExecutable": "bash",
         "runtimeArgs": [
           "-c",
           "echo 'Debug Bot' requires container! >&2; exit 1"

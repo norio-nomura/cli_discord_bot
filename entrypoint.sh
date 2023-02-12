@@ -1,7 +1,12 @@
-#!/bin/sh
+#!/bin/bash
+
+vars=()
+for v in DENO_TLS_CA_STORE HTTP_PROXY HTTPS_PROXY PATH; do
+    vars=("${vars[@]}" "${!v+${v}=${!v}}")
+done
 
 # Avoid passing options via environment variables or comandline arguments
-exec env -i PATH=${PATH} DENO_TLS_CA_STORE=system deno run \
+exec env -i ${vars[@]} deno run \
     --allow-env=PATH \
     --allow-net \
     --allow-run=/usr/bin/env \

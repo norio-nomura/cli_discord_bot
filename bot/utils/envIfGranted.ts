@@ -1,4 +1,4 @@
-export async function envIfGranted(key: string): Promise<string | undefined> {
-  const status = await Deno.permissions.query({ name: "env", variable: key });
+export function envIfGranted(key: string): string | undefined {
+  const status = Deno.permissions.querySync({ name: "env", variable: key });
   return status.state === "granted" ? Deno.env.get(key) : undefined;
 }

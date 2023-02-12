@@ -55,6 +55,8 @@ export const configuration = {
       argumentsToUseStdin: shellsplit(options.TARGET_ARGS_TO_USE_STDIN ?? ""),
       /** `TARGET_DEFAULT_ARGS` */
       defaultArguments: shellsplit(options.TARGET_DEFAULT_ARGS ?? ""),
+      /** `ATTACHMENT_EXTENSION_TO_TREAT_AS_INPUT` */
+      attachmentExtensionToTreatAsInput: options.ATTACHMENT_EXTENSION_TO_TREAT_AS_INPUT,
     };
   },
   get timeoutCommand(): string[] {

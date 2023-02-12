@@ -10,5 +10,5 @@ exec env -i PATH=${PATH} DENO_TLS_CA_STORE=system deno run \
     --quiet \
     "$@" \
     bot.ts <<EOF
-$(deno run -A printOptionsFromEnv.ts)
+$(deno eval 'import { printOptionsFromEnv } from "./mod.ts"; printOptionsFromEnv();')
 EOF

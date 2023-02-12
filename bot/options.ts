@@ -2,7 +2,7 @@ import { fail } from "../deps.ts";
 import { envIfGranted } from "./utils/envIfGranted.ts";
 
 export const requiredEnv = {
-  PATH: await envIfGranted("PATH") || fail("`PATH` environment variable is missing!"),
+  PATH: envIfGranted("PATH") || fail("`PATH` environment variable is missing!"),
 };
 
 // Declare Options class and default values.
@@ -35,6 +35,31 @@ export class Options {
   TIMEOUT_ARGS = "--signal=KILL 30";
   /** Timeout command launching target CLI */
   TIMEOUT_COMMAND = "timeout";
+
+  static get fromEnv() {
+    return optionsFromEnv();
+  }
+
+  static printOptionsFromEnv() {
+    writeAllSync(Deno.stdout, new TextEncoder().encode(JSON.stringify(Options.fromEnv)));
+  }
+}
+
+const keyOfOptions = Object.keys(new Options()) as (keyof Options)[];
+const valueConverters: { [key in keyof Options]?: (value: string) => Options[key] } = {
+  NUMBER_OF_LINES_TO_EMBED_OUTPUT: parseInt,
+  NUMBER_OF_LINES_TO_EMBED_UPLOADED_OUTPUT: parseInt,
+};
+
+function optionsFromEnv() {
+  return keyOfOptions.reduce((env, key) => {
+    const value = envIfGranted(key);
+    if (value) {
+      const converter = valueConverters[key];
+      env = { ...env, ...Object.fromEntries([[key, converter ? converter(value) : value]]) };
+    }
+    return env;
+  }, {} as { [key in keyof Options]: Options[key] });
 }
 
 export let options = new Options();

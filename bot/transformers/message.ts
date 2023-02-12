@@ -1,5 +1,5 @@
 import { Bot, DiscordMessage, EditMessage, Message, MessageTypes, transformMessage } from "../../deps.ts";
-import { options } from "../options.ts";
+import { configuration } from "../mod.ts";
 import { codeblockFrom, commandlinesFrom } from "../utils/messageContent.ts";
 
 declare module "../../deps.ts" {
@@ -49,9 +49,8 @@ export const transformExtendedMessage = (
 };
 
 async function inputFromAttachments(message: Message) {
-  const url = message.attachments.find((attachment) =>
-    attachment.filename.endsWith(options.ATTACHMENT_EXTENSION_TO_TREAT_AS_INPUT)
-  )?.url;
+  const extension = configuration.target.attachmentExtensionToTreatAsInput;
+  const url = extension && message.attachments.find((attachment) => attachment.filename.endsWith(extension))?.url;
   if (url) {
     return await fetch(url).then((response) => response.ok ? response.text() : undefined);
   }

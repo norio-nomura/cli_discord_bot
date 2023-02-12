@@ -1,4 +1,4 @@
-import { fail } from "../deps.ts";
+import { fail, readAllSync, writeAllSync } from "../deps.ts";
 import { envIfGranted } from "./utils/envIfGranted.ts";
 
 export const requiredEnv = {
@@ -39,6 +39,9 @@ export class Options {
   static get fromEnv() {
     return optionsFromEnv();
   }
+  static get fromStdin() {
+    return optionsFromStdin();
+  }
 
   static printOptionsFromEnv() {
     writeAllSync(Deno.stdout, new TextEncoder().encode(JSON.stringify(Options.fromEnv)));
@@ -60,6 +63,10 @@ function optionsFromEnv() {
     }
     return env;
   }, {} as { [key in keyof Options]: Options[key] });
+}
+
+function optionsFromStdin() {
+  return JSON.parse(new TextDecoder().decode(readAllSync(Deno.stdin))) as { [key in keyof Options]: Options[key] };
 }
 
 export let options = new Options();

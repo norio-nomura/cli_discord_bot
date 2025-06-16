@@ -1,5 +1,7 @@
 # CLI Discord Bot
 
+> ⚠️ **This repository has been archived. Please use [cli_discord_bot2](https://github.com/norio-nomura/cli_discord_bot2) from now on. CLI Discord Bot is deprecated and will no longer be maintained.**
+
 Written in [Deno](https://deno.land) and deployed with Docker.
 
 This is a generalized version of [SwiftCompilerDiscordappBot](https://github.com/norio-nomura/SwiftCompilerDiscordappBot) that can be used with various CLIs by configuration.
